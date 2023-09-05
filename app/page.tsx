@@ -14,11 +14,10 @@ export default function Home() {
   
 
   return (
-    <main className="fixed min-h-screen flex-col items-center justify-between p-24 bg-blue-600">
+    <main className="fixed min-h-screen flex-col items-center justify-between p-24">
       <Link id='link_arch' href={'/architecture'} className='fixed top-0 left-0 h-full w-4'></Link>
-      <h1>Hi, I&rsquo;m Tao</h1>
       <MouseDial/>
-      <p>a computational architect and fullstack developer</p>
+      
 
       <div>
         <span>About</span><span>Blog</span>

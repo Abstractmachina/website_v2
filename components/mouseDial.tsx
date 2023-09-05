@@ -13,29 +13,43 @@ function MouseDial() {
   const handleMouse = (e: React.MouseEvent<HTMLImageElement>): void => {
     setX(e.pageX);
     setY(e.pageY);
-  };
+    };
+    
+    const distanceToCenter = () :number => {
+        return centerX - x;
+    }
 
     const translateRotation = () : number => {
-        const distanceToCenter = centerX - x;
-        console.log(distanceToCenter);
-
-        return map(-distanceToCenter, 0, centerX, 0, 90);
-  };
+        return map(-1*distanceToCenter(), 0, centerX, 0, 90);
+    };
+    
+    const translateWidth = (): number => {
+        return map(Math.abs(distanceToCenter()), 2, centerX, 0, window.innerHeight+100);        
+    }
 
   return (
     <div
       id="circle"
       onMouseMove={handleMouse}
       className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center"
-    >
+      >
+          <motion.div>
+            <h1>Hi, I&rsquo;m Tao</h1>
+              
+          </motion.div>
+          
       <motion.div
-        className="bg-green-400"
+        className="h-1 fixed bg-black"
         style={{
-          rotateZ: translateRotation(),
+            rotateZ: translateRotation(),
+            width: translateWidth(),
         }}
       >
-        <span>{x}</span> <span>{y}</span>
-      </motion.div>
+          </motion.div>
+          <motion.div>
+              
+          </motion.div>
+          <p>a computational architect and fullstack developer</p>
     </div>
   );
 }
