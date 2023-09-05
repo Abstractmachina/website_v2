@@ -2,7 +2,12 @@ import React from 'react'
 
 function ProjectIndexRow() {
   return (
-    <div>ProjectIndexRow</div>
+      <div className='flex flex-row justify-between'>
+          <span>2000</span>
+          <span>Project Title</span>
+          <span>Type</span>
+          <span>Affiliation</span>
+    </div>
   )
 }
 

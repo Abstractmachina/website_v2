@@ -1,18 +1,32 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { MouseEventHandler, useState } from 'react';
 
 export default function Home() {
+
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
 
   const handleClick = () => {
 
   }
 
+  const handleMouse = (e: React.MouseEvent<HTMLImageElement>) : void => {
+    setX(e.pageX)
+    setY(e.pageY)
+}
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main onMouseMove={handleMouse} className="flex min-h-screen flex-col items-center justify-between p-24">
       <Link id='link_arch' href={'/architecture'} className='fixed top-0 left-0 h-full w-48 bg-red-900'></Link>
       <h1>Hi, I&rsquo;m Tao</h1>
-      <div></div>
+      <div id="circle">
+        <span>{x}</span> <span>{y}</span>
+
+
+      </div>
       <p>a computational architect and fullstack developer</p>
 
       <div>
