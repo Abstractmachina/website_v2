@@ -16,26 +16,28 @@ function MouseDial() {
 	const handleMouse = (e: React.MouseEvent<HTMLImageElement>): void => {
 		setX(e.pageX);
 		setY(e.pageY);
-		console.log(distanceToCenter_signed());
 	};
 
-	const distanceToCenter_signed = (): number => {
-		return x - centerX;
+	const distanceToCenter = (unsigned: boolean): number => {
+		let dist = x - centerX;
+		return unsigned ? Math.abs(dist) : dist;
 	};
 
 	const translateRotation = (): number => {
-		if (Math.abs(distanceToCenter_signed()) < rotationThreshold) return 0;
+		const dist = distanceToCenter(false);
+		const u_dist = Math.abs(dist);
+		if (u_dist < rotationThreshold) return 0;
 
-		const val = map(Math.abs(distanceToCenter_signed()), rotationThreshold, centerX, 0, 100);
-		const sign = distanceToCenter_signed() / Math.abs(distanceToCenter_signed());
+		const val = map(u_dist, rotationThreshold, centerX, 0, 100);
+		const sign = dist / u_dist;
 		// angle caps at 90
 		return val > 90 || val < -90 ? 90 * sign : val * sign;
 	};
 
 	const translateWidth = (): number => {
-		const dist_unsigned = Math.abs(distanceToCenter_signed());
-		if (dist_unsigned < lineWidthThreshold) return 0;
-		return map(Math.abs(distanceToCenter_signed()), lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
+		const u_dist = distanceToCenter(true);
+		if (u_dist < lineWidthThreshold) return 0;
+		return map(u_dist, lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
 	};
 
 	const translateX = (): number => {
@@ -43,8 +45,9 @@ function MouseDial() {
 	};
 
 	const bannerTopMotion = () => {
-		const u_dist = distanceToCenter_signed();
-		const opacity = map(Math.abs(u_dist), 0, centerX, 0, 1.0);
+		const u_dist = distanceToCenter(true);
+		const opacity = map(u_dist, 0, centerX, 0, 1.0);
+		// const xPos = 
 		return {
 			opacity,
 		};
