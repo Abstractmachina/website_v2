@@ -39,8 +39,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={` ${inter.className} ${monolisk.variable}  ${openSans.className}`}>
-      <body >{children}</body>
-      <Footer/>
+      <body >
+        {children}
+        <Footer />
+      </body>
+      
     </html>
   )
 }
