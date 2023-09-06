@@ -5,11 +5,13 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 
 function MouseDial() {
-  const centerX = Math.round( window.innerWidth / 2);
+  const isBrowser = typeof window !== "undefined"; 
+  const centerX = Math.round(isBrowser ? window.innerWidth / 2 : 0);
+  const centerY = Math.round(isBrowser ? window.innerHeight / 2 : 0);
   const lineWidthThreshold = 150;
   const rotationThreshold = 200;
   const [x, setX] = useState(centerX);
-  const [y, setY] = useState(Math.round(window.innerHeight / 2));
+  const [y, setY] = useState(Math.round(centerY));
 
   const handleMouse = (e: React.MouseEvent<HTMLImageElement>): void => {
     setX(e.pageX);
@@ -58,7 +60,7 @@ function MouseDial() {
       className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center"
     >
       <motion.div>
-        <h1 className="categoryBanner">Architecture</h1>
+        <h1 className="font-monolisk text-yellow-300 text-8xl">Architecture</h1>
       </motion.div>
 
       {/* center circle */}
@@ -70,7 +72,7 @@ function MouseDial() {
           x: translateX(),
         }}
       >
-        <h1>Hi, I&rsquo;m Tao</h1>
+        <h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
       </motion.div>
       {/* center line */}
       <motion.div

@@ -8,6 +8,12 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+@layer base {
+	body {
+		font-family: 'font-sans', Helvetica, sans-serif;
+	}
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -15,14 +21,6 @@
     --background-end-rgb: 255, 255, 255;
   }
 }
-
-/* @layer base {
-  @font-face {
-    font-family: Monolisk;
-    font-weight: 400;
-    src: url(/assets/monolisk_black.woff) format("woff");
-  }
-} */
 
 body {
   /* color: rgb(var(--foreground-rgb));
@@ -47,7 +45,6 @@ h1 {
   position:fixed;
     color: rgb(255, 221, 0);
     text-align: center;
-    font-family: "Monolisk Black", sans-serif;
     font-size: 10em;
     z-index: 4;
 }
