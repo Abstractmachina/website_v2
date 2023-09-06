@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="fixed min-h-screen flex-col items-center justify-between p-24">
-      <Link id='link_arch' href={'/architecture'} className='fixed top-0 left-0 h-full w-1/3 bg-slate-400 z-10'></Link>
+      
 
       <MouseDial/>
       

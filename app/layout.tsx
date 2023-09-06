@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter, Open_Sans } from 'next/font/google'
 import localfont from 'next/font/local';
+import {AnimatePresence} from 'framer-motion';
 
 
 const openSans = Open_Sans({

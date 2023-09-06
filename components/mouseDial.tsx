@@ -1,7 +1,8 @@
 "use client";
 
 import { map } from "@/libs/util";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 function MouseDial() {
@@ -16,7 +17,7 @@ function MouseDial() {
 	// attach event listener to window when component is mounted
 	useEffect(() => {
 		if (isBrowser) {
-			window.addEventListener("mousemove", handleMouse)
+			window.addEventListener("mousemove", handleMouse);
 		}
 	}, []);
 
@@ -24,7 +25,7 @@ function MouseDial() {
 		setX(e.pageX);
 		setY(e.pageY);
 	};
-	
+
 	const distanceToCenter = (unsigned: boolean): number => {
 		let dist = x - centerX;
 		return unsigned ? Math.abs(dist) : dist;
@@ -47,6 +48,13 @@ function MouseDial() {
 		return map(u_dist, lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
 	};
 
+	const centerLineMotion = () => {
+		return {
+			rotateZ: translateRotation(),
+			width: translateWidth(),
+		};
+	};
+
 	const translateX = (): number => {
 		return (x - centerX) * 0.3;
 	};
@@ -54,63 +62,81 @@ function MouseDial() {
 	const bannerTopMotion = () => {
 		const dist = distanceToCenter(false);
 		const u_dist = distanceToCenter(true);
-		const opacity = (dist > 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		const opacity = dist > 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
 		const xPos = dist * 0.9 + 200;
 		return {
 			opacity,
-			x: xPos
+			x: xPos,
 		};
 	};
 	const bannerBottomMotion = () => {
 		const dist = distanceToCenter(false);
 		const u_dist = distanceToCenter(true);
-		const opacity = (dist < 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
-		const xPos = dist * 0.9 - 600 ;
+		const opacity = dist < 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		const xPos = dist * 0.9 - 600;
 		return {
 			opacity,
-			x: xPos
+			x: xPos,
+		};
+	};
+
+	const archLinkMotion = () => {
+		const dist = distanceToCenter(false);
+		const opacity = map(dist, 0, -centerX, 0, 1.0);
+		return {
+			opacity,
 		};
 	};
 
 	return (
-		<div className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
-			{/* Arch Banner */}
-			<motion.div style={bannerTopMotion()}>
-				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Architecture</h1>
-			</motion.div>
-			<motion.div style={bannerBottomMotion()}>
-				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Software Development</h1>
-			</motion.div>
+		<AnimatePresence initial= {false} mode="wait">
+			<div className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
+				<motion.div key= {"dial_link_arch"} style={archLinkMotion()}>
+					<Link id="link_arch" href={"/architecture"} className="fixed top-0 left-0 h-full w-1/3 bg-gradient-to-r from-yellow-200 z-10"></Link>
+				</motion.div>
 
-			{/* center circle */}
-			<div className="fixed w-4 h-4 bg-black rounded-full"></div>
-			{/* Hi Im Tao */}
-			<motion.div
-				className="fixed top-1/3"
-				style={{
-					x: translateX(),
-				}}
-			>
-				<h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
-			</motion.div>
-			{/* center line */}
-			<motion.div
-				className="h-px fixed bg-black"
-				style={{
-					rotateZ: translateRotation(),
-					width: translateWidth(),
-				}}
-			></motion.div>
-			{/* tag line */}
-			<motion.div
-				className="fixed bottom-1/3"
-				style={{
-					x: translateX() * -1,
-				}}
-			>
-				<p>a computational architect and fullstack developer</p>
-			</motion.div>
-		</div>
+				{/* Arch Banner */}
+				<motion.div style={bannerTopMotion()}>
+					<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Architecture</h1>
+				</motion.div>
+				<motion.div style={bannerBottomMotion()}>
+					<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Software Development</h1>
+				</motion.div>
+
+				{/* center circle */}
+				<div className="fixed w-4 h-4 bg-black rounded-full"></div>
+				{/* Hi Im Tao */}
+				<motion.div
+					className="fixed top-1/3"
+					key={"dial_myName"}
+
+					initial={{
+						x: -300
+					}}
+
+					exit={{
+						x: -300
+					}}
+					style={{
+						x: translateX(),
+					}}
+				>
+					<h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
+				</motion.div>
+				{/* center line */}
+				<motion.div className="h-px fixed bg-black" style={centerLineMotion()}></motion.div>
+				{/* tag line */}
+				<motion.div
+					className="fixed bottom-1/3"
+					style={{
+						x: translateX() * -1,
+						rotateZ: 0,
+					}}
+				>
+					<p>a computational architect and fullstack developer</p>
+				</motion.div>
+			</div>
+		</AnimatePresence>
 	);
 }
 
