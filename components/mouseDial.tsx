@@ -2,7 +2,7 @@
 
 import { map } from "@/libs/util";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function MouseDial() {
 	const isBrowser = typeof window !== "undefined";
@@ -13,11 +13,18 @@ function MouseDial() {
 	const [x, setX] = useState(centerX);
 	const [y, setY] = useState(Math.round(centerY));
 
-	const handleMouse = (e: React.MouseEvent<HTMLImageElement>): void => {
+	// attach event listener to window when component is mounted
+	useEffect(() => {
+		if (isBrowser) {
+			window.addEventListener("mousemove", handleMouse)
+		}
+	}, []);
+
+	const handleMouse = (e: MouseEvent): void => {
 		setX(e.pageX);
 		setY(e.pageY);
 	};
-
+	
 	const distanceToCenter = (unsigned: boolean): number => {
 		let dist = x - centerX;
 		return unsigned ? Math.abs(dist) : dist;
@@ -45,18 +52,34 @@ function MouseDial() {
 	};
 
 	const bannerTopMotion = () => {
+		const dist = distanceToCenter(false);
 		const u_dist = distanceToCenter(true);
-		const opacity = map(u_dist, 0, centerX, 0, 1.0);
-		// const xPos = 
+		const opacity = (dist > 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		const xPos = dist * 0.9 + 200;
 		return {
 			opacity,
+			x: xPos
+		};
+	};
+	const bannerBottomMotion = () => {
+		const dist = distanceToCenter(false);
+		const u_dist = distanceToCenter(true);
+		const opacity = (dist < 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		const xPos = dist * 0.9 - 600 ;
+		return {
+			opacity,
+			x: xPos
 		};
 	};
 
 	return (
-		<div onMouseMove={handleMouse} className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
+		<div className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
+			{/* Arch Banner */}
 			<motion.div style={bannerTopMotion()}>
-				<h1 className="font-monolisk text-yellow-300 text-8xl fixed top-32">Architecture</h1>
+				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Architecture</h1>
+			</motion.div>
+			<motion.div style={bannerBottomMotion()}>
+				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Software Development</h1>
 			</motion.div>
 
 			{/* center circle */}

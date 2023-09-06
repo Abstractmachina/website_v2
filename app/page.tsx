@@ -15,13 +15,13 @@ export default function Home() {
 
   return (
     <main className="fixed min-h-screen flex-col items-center justify-between p-24">
-      <Link id='link_arch' href={'/architecture'} className='fixed top-0 left-0 h-full w-4'></Link>
+      <Link id='link_arch' href={'/architecture'} className='fixed top-0 left-0 h-full w-1/3 bg-slate-400 z-10'></Link>
+
       <MouseDial/>
       
-
-      <div>
+      <footer className='fixed bottom-0 left-0 py-2 px-6 flex justify-between min-w-full'>
         <span>About</span><span>Blog</span>
-      </div>
+      </footer>
 
     </main>
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
