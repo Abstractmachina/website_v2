@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, Open_Sans } from 'next/font/google'
 import localfont from 'next/font/local';
 import {AnimatePresence} from 'framer-motion';
+import Footer from '@/components/Footer';
 
 
 const openSans = Open_Sans({
@@ -39,6 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={` ${inter.className} ${monolisk.variable}  ${openSans.className}`}>
       <body >{children}</body>
+      <Footer/>
     </html>
   )
 }

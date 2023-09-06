@@ -1,11 +1,14 @@
 "use client";
 
 import { map } from "@/libs/util";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 function MouseDial() {
+  const router = useRouter();
+  const [scope, animate] = useAnimate();
 	const isBrowser = typeof window !== "undefined";
 	const centerX = Math.round(isBrowser ? window.innerWidth / 2 : 0);
 	const centerY = Math.round(isBrowser ? window.innerHeight / 2 : 0);
@@ -86,13 +89,17 @@ function MouseDial() {
 		return {
 			opacity,
 		};
-	};
+  };
+  
+  const exitPageToArchprojects = async () => {
+    await animate("#myName", { x: -500 }, { duration: 2 });
+    router.push('/architecture');
+  }
 
 	return (
-		<AnimatePresence initial= {false} mode="wait">
-			<div className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
+    <div ref={scope} className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
 				<motion.div key= {"dial_link_arch"} style={archLinkMotion()}>
-					<Link id="link_arch" href={"/architecture"} className="fixed top-0 left-0 h-full w-1/3 bg-gradient-to-r from-yellow-200 z-10"></Link>
+        <div id="link_arch" onClick={ exitPageToArchprojects} className="fixed top-0 left-0 h-full w-1/3 bg-gradient-to-r from-yellow-200 z-10"></div>
 				</motion.div>
 
 				{/* Arch Banner */}
@@ -106,17 +113,8 @@ function MouseDial() {
 				{/* center circle */}
 				<div className="fixed w-4 h-4 bg-black rounded-full"></div>
 				{/* Hi Im Tao */}
-				<motion.div
+				<motion.div id="myName"
 					className="fixed top-1/3"
-					key={"dial_myName"}
-
-					initial={{
-						x: -300
-					}}
-
-					exit={{
-						x: -300
-					}}
 					style={{
 						x: translateX(),
 					}}
@@ -136,7 +134,6 @@ function MouseDial() {
 					<p>a computational architect and fullstack developer</p>
 				</motion.div>
 			</div>
-		</AnimatePresence>
 	);
 }
 
