@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter, Open_Sans } from 'next/font/google'
+import { Inter, Open_Sans, Roboto } from 'next/font/google'
 import localfont from 'next/font/local';
 import {AnimatePresence} from 'framer-motion';
 import Footer from '@/components/Footer';
@@ -10,10 +10,16 @@ const openSans = Open_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-opensans',
-})
+});
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+});
+const roboto = Roboto({
+  weight: ['100', '400', '900'],
+  subsets: ['latin'],
+  style: ['italic', 'normal'],
+  variable: '--font-roboto',
 })
 
 const monolisk = localfont({
@@ -38,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={` ${inter.className} ${monolisk.variable}  ${openSans.className}`}>
+    <html lang="en" className={` ${inter.className} ${monolisk.variable}  ${openSans.className} ${roboto.className}`}>
       <body >
         {children}
         <Footer />

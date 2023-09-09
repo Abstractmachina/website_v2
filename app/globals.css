@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -10,7 +11,7 @@
 
 @layer base {
 	body {
-		font-family: 'font-sans', Helvetica, sans-serif;
+		font-family: var(--font-sans), Helvetica, sans-serif;
 	}
 }
 
@@ -36,7 +37,6 @@ body {
 
 
 h1 {
-
 	font-size: 3rem;
 }
 

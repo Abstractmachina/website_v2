@@ -16,8 +16,8 @@ const config: Config = {
       },
       fontFamily: {
         'monolisk': ['var(--font-monolisk)'],
-        'inter': ['var(--font-inter)'],
-        sans: ["var(--font-opensans)"],
+        'inter': ['var(--font-inter)', 'sans-serif'],
+        'roboto': ['var(--font-roboto)', 'sans-serif'],
       },
     },
     fontFamily: {
