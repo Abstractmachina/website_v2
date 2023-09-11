@@ -2,19 +2,21 @@
 
 import ProjectContent from "@/components/projectContent";
 import ProjectIndexRow from "@/components/ProjectIndexRow";
+import Trackpoint from "@/components/Trackpoint";
+import { useArchStore } from "@/libs/stateManagement";
+import { isBrowser } from "@/libs/util";
 import { IPosition } from "@/types/IPosition";
 import { motion, useAnimate } from "framer-motion";
-import PropTypes from "prop-types";
 import React, { Component, useEffect, useState } from "react";
 
 function Architecture() {
-    const isBrowser = typeof window !== "undefined";
-    
+
+    const archStore = useArchStore();    
 	const [scope, animate] = useAnimate();
     const [project, setProject] = useState("none");
     const [animateDot, setAnimateDot] = useState(false);
 88
-    const [pos, setPos] = useState({x: window.innerWidth/2, y: window.innerHeight/2} as IPosition)
+    const [pos, setPos] = useState(isBrowser() ? { x: window.innerWidth / 2, y: window.innerHeight / 2 } as IPosition : { x: 0, y: 0 } as IPosition);
     
     useEffect(() => {
         
@@ -40,18 +42,9 @@ function Architecture() {
 	const fetchProject = async () => {};
 
 	return (
-		<main ref={scope} className="flex min-h-screen h-full w-full" onMouseMove={handleMouse}>
+		<div ref={scope} className="flex min-h-screen h-full w-full" onMouseMove={handleMouse}>
 			{/* center circle */}
-            <motion.div
-				id="center_circle"
-				className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
-                style={{ backgroundColor: "#000000", }}
-                initial={{
-                    y: window.innerHeight/2
-                }}
-                animate={{y: pos.y}}
-                transition={{ type: "tween" }}
-			></motion.div>
+            <Trackpoint pos={pos} showPreview={ archStore.previewIsVisible} />
 
 			{/* project index */}
 			<div id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin">
@@ -59,7 +52,7 @@ function Architecture() {
 					Architecture / Design
                 </motion.h1>
                 
-                <motion.div id="projects" className="flex flex-col gap-4 mt-9" style={{ x: -2000, }}
+                <motion.div id="projects" className="flex flex-col gap-10 mt-9 mr-28" style={{ x: -2000, }}
                 >
 					<ProjectIndexRow />
 					<ProjectIndexRow />
@@ -74,7 +67,7 @@ function Architecture() {
                 project != 'none' && <ProjectContent />
             }
             
-		</main>
+		</div>
 	);
 }
 
