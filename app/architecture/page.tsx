@@ -25,7 +25,7 @@ function Architecture() {
                 animate("#container_projectindex", { width: "50%", padding: "4rem" }, { duration: 1, ease: "easeOut" }),
                 animate("#projects", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }),
                 animate("#title_arch", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }),
-                animate("#center_circle", { backgroundColor: "#ffffff" }, { duration: 1, ease: "easeOut", delay: 1 })]);
+                animate("#trackpoint", { backgroundColor: "#ffffff" }, { duration: 1, ease: "easeOut", delay: 1 })]);
                 
             setAnimateDot(true);
 		};
@@ -44,7 +44,7 @@ function Architecture() {
 	return (
 		<div ref={scope} className="flex min-h-screen h-full w-full" onMouseMove={handleMouse}>
 			{/* center circle */}
-            <Trackpoint pos={pos} showPreview={ archStore.previewIsVisible} />
+            <Trackpoint pos={pos} />
 
 			{/* project index */}
 			<div id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin">

@@ -9,25 +9,22 @@ import React, { FC, ReactElement, useState } from "react";
 
 type TrackpointProps = {
     pos: IPosition;
-    showPreview: boolean;
 }
 
 
-const Trackpoint: FC<TrackpointProps> = ({ pos, showPreview }): ReactElement => {
+const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
     // sizes in rem
     const expandedSize: number = 6;
     const collapsedSize: number = 1;
 
-    const archStore = useArchStore();
+    const { previewIsVisible } = useArchStore();
 
 
-	
-    
 
     return (
         <motion.div
             
-			id="center_circle"
+			id="trackpoint"
 			className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
 			style={{ backgroundColor: "rgb(23 23 23)" }}
 			initial={{
@@ -35,10 +32,10 @@ const Trackpoint: FC<TrackpointProps> = ({ pos, showPreview }): ReactElement => 
 			}}
             animate={{
                 y: pos.y,
-                height: showPreview ? `${expandedSize}rem` : `${collapsedSize}rem`,
-                width: showPreview ? `${expandedSize}rem` : `${collapsedSize}rem`,
+                height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
+                width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
             }}
-			transition={{ type: "tween" }}
+			transition={{ type: "tween", duration: 0.1}}
 		></motion.div>
 	);
 }
