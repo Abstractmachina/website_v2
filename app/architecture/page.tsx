@@ -2,6 +2,7 @@
 
 import ProjectContent from "@/components/projectContent";
 import ProjectIndexRow from "@/components/projectIndexRow";
+import { IPosition } from "@/types/IPosition";
 import { motion, useAnimate } from "framer-motion";
 import PropTypes from "prop-types";
 import React, { Component, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ function Architecture() {
 	const [scope, animate] = useAnimate();
     const [project, setProject] = useState("none");
 
+    const [pos, setPos] = useState({x: 0, y: 0} as IPosition)
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const centerX = Math.round(isBrowser ? window.innerWidth / 2 : 0);
@@ -29,28 +31,10 @@ function Architecture() {
 		};
 
         initAnim();
-        if (isBrowser) {
-			// window.addEventListener("mousemove", handleMouse);
-		}
 	}, []);
 
     const handleMouse = async (e: React.MouseEvent) => {
-        setX(e.pageX);
-        setY(e.pageY);
-
-
-        const position = {
-            x: e.pageX,
-            y: e.pageY
-        };
-        
-
-
-        // await animate('#center_circle', {y: moveCenterCircle()}, {});
-    }
-
-    const moveCenterCircle = () => {
-        // return y - centerY;
+        setPos({x: e.pageX, y: e.pageY})
     }
 	/**
 	 * fetch project from database with provided id string
@@ -63,14 +47,9 @@ function Architecture() {
             <motion.div
 				id="center_circle"
 				className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
-				style={{
-                    backgroundColor: "#000000",
-                }}
-                animate={{
-                    y: y
-                }}
-                transition={{ type: "tween" }}
-
+				style={{backgroundColor: "#000000",}}
+                animate={{y: pos.y}}
+                transition={{ type: "spring" }}
 			></motion.div>
 
 			{/* project index */}
