@@ -30,13 +30,22 @@ function Architecture() {
 
         initAnim();
         if (isBrowser) {
-			window.addEventListener("mousemove", handleMouse);
+			// window.addEventListener("mousemove", handleMouse);
 		}
 	}, []);
 
-    const handleMouse = async (e: MouseEvent) => {
+    const handleMouse = async (e: React.MouseEvent) => {
         setX(e.pageX);
         setY(e.pageY);
+
+
+        const position = {
+            x: e.pageX,
+            y: e.pageY
+        };
+        
+
+
         // await animate('#center_circle', {y: moveCenterCircle()}, {});
     }
 
@@ -48,47 +57,20 @@ function Architecture() {
 	 */
 	const fetchProject = async () => {};
 
-    function getRelativeCoordinates(event: MouseEvent, referenceElement:any) {
-        const position = {
-          x: event.pageX,
-          y: event.pageY
-        };
-      
-        const offset = {
-          left: referenceElement.offsetLeft,
-          top: referenceElement.offsetTop,
-          width: referenceElement.clientWidth,
-          height: referenceElement.clientHeight
-        };
-      
-        let reference = referenceElement.offsetParent;
-      
-        while (reference) {
-          offset.left += reference.offsetLeft;
-          offset.top += reference.offsetTop;
-          reference = reference.offsetParent;
-        }
-      
-        return {
-          x: position.x - offset.left,
-          y: position.y - offset.top,
-          width: offset.width,
-          height: offset.height,
-          centerX: (position.x - offset.left - offset.width / 2) / (offset.width / 2),
-          centerY: (position.y - offset.top - offset.height / 2) / (offset.height / 2)
-        };
-      }
-
 	return (
-		<main ref={scope} className="flex min-h-screen h-full w-full">
+		<main ref={scope} className="flex min-h-screen h-full w-full" onMouseMove={handleMouse}>
 			{/* center circle */}
-			<motion.div
+            <motion.div
 				id="center_circle"
-				className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto top-1/2 z-10"
+				className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
 				style={{
                     backgroundColor: "#000000",
-                    y:y
-				}}
+                }}
+                animate={{
+                    y: y
+                }}
+                transition={{ type: "tween" }}
+
 			></motion.div>
 
 			{/* project index */}
