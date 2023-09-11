@@ -1,7 +1,7 @@
 "use client";
 
 import ProjectContent from "@/components/projectContent";
-import ProjectIndexRow from "@/components/projectIndexRow";
+import ProjectIndexRow from "@/components/ProjectIndexRow";
 import { IPosition } from "@/types/IPosition";
 import { motion, useAnimate } from "framer-motion";
 import PropTypes from "prop-types";
@@ -50,22 +50,16 @@ function Architecture() {
                     y: window.innerHeight/2
                 }}
                 animate={{y: pos.y}}
-                transition={{ type: "spring" }}
+                transition={{ type: "tween" }}
 			></motion.div>
 
 			{/* project index */}
 			<div id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin">
-				<motion.h1 id="title_arch" className="text-white"
-					style={{
-						x: -2000,
-					}}
-				>
+				<motion.h1 id="title_arch" className="text-white" style={{x: -2000,}}>
 					Architecture / Design
-				</motion.h1>
-				<motion.div id="projects" className=" bg-red-500 flex flex-col"
-					style={{
-						x: -2000,
-                    }}
+                </motion.h1>
+                
+                <motion.div id="projects" className="flex flex-col gap-4 mt-9" style={{ x: -2000, }}
                 >
 					<ProjectIndexRow />
 					<ProjectIndexRow />
@@ -75,8 +69,11 @@ function Architecture() {
 				</motion.div>
 			</div>
 
-			{/* project content */}
-			<ProjectContent />
+            {/* project content */}
+            {
+                project != 'none' && <ProjectContent />
+            }
+            
 		</main>
 	);
 }
