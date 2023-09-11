@@ -12,29 +12,27 @@ function Architecture() {
     
 	const [scope, animate] = useAnimate();
     const [project, setProject] = useState("none");
-
-    const [pos, setPos] = useState({x: 0, y: 0} as IPosition)
-    const [x, setX] = useState(0);
-    const [y, setY] = useState(0);
-    const centerX = Math.round(isBrowser ? window.innerWidth / 2 : 0);
-	const centerY = Math.round(isBrowser ? window.innerHeight / 2 : 0);
+    const [animateDot, setAnimateDot] = useState(false);
+88
+    const [pos, setPos] = useState({x: window.innerWidth/2, y: window.innerHeight/2} as IPosition)
     
- 
-
-	useEffect(() => {
+    useEffect(() => {
+        
 		const initAnim = async () => {
             await Promise.all([
                 animate("#container_projectindex", { width: "50%", padding: "4rem" }, { duration: 1, ease: "easeOut" }),
                 animate("#projects", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }),
                 animate("#title_arch", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }),
                 animate("#center_circle", { backgroundColor: "#ffffff" }, { duration: 1, ease: "easeOut", delay: 1 })]);
+                
+            setAnimateDot(true);
 		};
 
         initAnim();
 	}, []);
 
-    const handleMouse = async (e: React.MouseEvent) => {
-        setPos({x: e.pageX, y: e.pageY})
+    const handleMouse =  (e: React.MouseEvent) => {
+        if (animateDot) setPos({x: e.pageX, y: e.pageY})
     }
 	/**
 	 * fetch project from database with provided id string
@@ -47,7 +45,10 @@ function Architecture() {
             <motion.div
 				id="center_circle"
 				className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
-				style={{backgroundColor: "#000000",}}
+                style={{ backgroundColor: "#000000", }}
+                initial={{
+                    y: window.innerHeight/2
+                }}
                 animate={{y: pos.y}}
                 transition={{ type: "spring" }}
 			></motion.div>
