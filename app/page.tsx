@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import MouseDial from '@/components/mouseDial';
+import MouseDial from '@/components/MouseDial';
 import Image from 'next/image'
 import Link from 'next/link'
 import { MouseEventHandler, useState } from 'react';

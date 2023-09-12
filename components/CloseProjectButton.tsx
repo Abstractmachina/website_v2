@@ -1,8 +1,8 @@
-import { useArchStore } from '@/stores/archStore'
+import { useArchActions, useArchStore } from '@/stores/archStore'
 import React from 'react'
 
 function CloseProjectButton() {
-  const { setSelectedProject } = useArchStore();
+  const { setSelectedProject } = useArchActions();
 
   const handleClick = () => {
     setSelectedProject('none');
