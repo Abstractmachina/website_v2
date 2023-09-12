@@ -9,7 +9,7 @@ function CloseProjectButton() {
   }
 
   return (
-    <div onClick={handleClick} className=' bg-red-600 min-h-[2rem] min-w-[2rem] hover:bg-red-300'></div>
+    <div onClick={handleClick} className=' bg-red-600 min-h-[2rem] min-w-[2rem] hover:bg-red-300 hover:cursor-pointer'></div>
   )
 }
 

@@ -29,10 +29,14 @@ function ProjectIndexRow() {
   const handleClick = () => {
     archStore.setSelectedProject("test");
     archStore.showPreview(false);
+    if (containerRef.current) {
+      containerRef.current.style.color = 'yellow'
+      containerRef.current.style.fontWeight = '700'
+    }
   }
 
 	return (
-    <div ref={containerRef} className="flex flex-row justify-between text-white"
+    <div ref={containerRef} className="flex flex-row justify-between text-white hover:cursor-pointer"
       onMouseEnter={handleOnHoverStart}
       onMouseLeave={handleOnHoverEnd}
       onClick={handleClick}

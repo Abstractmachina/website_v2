@@ -1,6 +1,6 @@
 "use client";
 
-import ProjectContent from "@/components/projectContent";
+import ProjectContent from "@/components/ProjectContent";
 import ProjectIndexRow from "@/components/ProjectIndexRow";
 import Trackpoint from "@/components/Trackpoint";
 import { useArchStore } from "@/stores/archStore";
