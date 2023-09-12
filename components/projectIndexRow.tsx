@@ -8,13 +8,10 @@ function ProjectIndexRow() {
 
 	const handleOnHoverStart = (e: React.MouseEvent) => {
     archStore.showPreview(true);
-    if (containerRef.current)
-      console.log(containerRef.current?.offsetTop);
+    // update preview position for aligning trackpoint with hovered project index
     archStore.setPosition(
       containerRef.current ? containerRef.current.offsetLeft : 0,
-      containerRef.current ? containerRef.current.offsetTop : 0)
-    
-    console.log(archStore.previewPostion);
+      containerRef.current ? containerRef.current.offsetTop + containerRef.current.offsetHeight : 0)    
 	};
 
 	const handleOnHoverEnd = (e: React.MouseEvent) => {
@@ -22,7 +19,7 @@ function ProjectIndexRow() {
 
 	};
 	return (
-    <div ref={ containerRef} className="flex flex-row justify-between text-white hover:bg-yellow-400" onMouseEnter={handleOnHoverStart} onMouseLeave={handleOnHoverEnd}>
+    <div ref={ containerRef} className="flex flex-row justify-between text-white hover:font-bold" onMouseEnter={handleOnHoverStart} onMouseLeave={handleOnHoverEnd}>
 			<span>2000</span>
 			<span>Project Title</span>
 			<span>Type</span>

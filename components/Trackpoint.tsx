@@ -36,7 +36,14 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 	const calcYShift = (): number => {
 		const remMultiplier = previewIsVisible ? expandedSize : collapsedSize;
 		return (baseFontSize * remMultiplier) / 2;
-	};
+    };
+    
+    const calcUnderlineWidth = (): number => {
+        const centerX = isBrowser() ? window.innerWidth / 2 : 0;
+        const left = previewPostion.x;
+
+        return centerX + yShift - left;
+    }
 
 	return (
 		<motion.div
@@ -47,19 +54,20 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 				y: isBrowser() ? window.innerHeight / 2 : 0,
 			}}
 			animate={{
-				y: previewIsVisible ? previewPostion.y - 25 : pos.y - yShift,
+				y: previewIsVisible ? previewPostion.y - baseFontSize*3 : pos.y - yShift,
 				height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 				width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 			}}
             transition={{ type: "tween", duration: 0.2 }}
-		>
+        >
+            {/* underline */}
 			<motion.div
-				className=" h-[1px] bg-red-400 absolute mt-1"
+				className=" h-[1px] bg-white absolute mt-1"
                 style={{
                     width: 10,
                 }}
                 animate={{
-                    width: previewIsVisible ? 500 : 10,
+                    width: previewIsVisible ? calcUnderlineWidth() : 10,
                     paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`
                 }}
                 transition={{ type: "tween", duration: 0.4 }}
