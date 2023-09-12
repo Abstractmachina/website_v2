@@ -62,10 +62,7 @@ function ProjectIndexRow() {
   }
 
 
-  
-
-
-  const determineStyle = () => {
+  function determineStyle() {
     switch (currentState) {
       case ProjectIndexRowState.SELECTED: return projectIsSelectedStyle;
         break;
