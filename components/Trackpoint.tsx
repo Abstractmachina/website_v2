@@ -15,33 +15,34 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 
 	// sizes in rem
 	const expandedSize: number = 6;
-    const collapsedSize: number = 1;
-    let rootFontSize = "unset";
-    if (isBrowser()) rootFontSize = window.getComputedStyle(document.body).getPropertyValue("font-size");
-    if (rootFontSize == "unset") rootFontSize = "16px";
-    const fontSize = parseInt(rootFontSize, 10);
-    const [yShift, setYShift] = useState(0);
+	const collapsedSize: number = 1;
+
+	const [baseFontSize, setBaseFontSize] = useState<number>(16);
+	const [yShift, setYShift] = useState(0);
 
 	const [diameter, setDiameter] = useState<string>(previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`);
 
-    useEffect(() => {        
-    }, []);
-    
-    useEffect(() => {
-        setYShift(calcYShift());
-    }, [previewIsVisible]);
+	useEffect(() => {
+		let rootFontSize = "unset";
+		if (isBrowser()) rootFontSize = window.getComputedStyle(document.body).getPropertyValue("font-size");
+		if (rootFontSize == "unset") rootFontSize = "16px";
+		setBaseFontSize(parseInt(rootFontSize, 10));
+	}, []);
 
+	useEffect(() => {
+		setYShift(calcYShift());
+	}, [previewIsVisible]);
 
-    const calcYShift = () : number => {
-        const remMultiplier = previewIsVisible ? expandedSize : collapsedSize;
-        return (fontSize * remMultiplier) / 2; 
-    };
+	const calcYShift = (): number => {
+		const remMultiplier = previewIsVisible ? expandedSize : collapsedSize;
+		return (baseFontSize * remMultiplier) / 2;
+	};
 
 	return (
 		<motion.div
 			id="trackpoint"
-			className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10"
-			style={{ backgroundColor: "rgb(23 23 23)" }}
+			className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10 flex items-center overflow-visible justify-end"
+			style={{ backgroundColor: "#171717", }}
 			initial={{
 				y: isBrowser() ? window.innerHeight / 2 : 0,
 			}}
@@ -50,8 +51,12 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 				height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 				width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 			}}
-			transition={{ type: "tween", duration: 0.1 }}
-		></motion.div>
+            transition={{ type: "tween", duration: 0.1 }}
+        >
+            { previewIsVisible &&
+                <motion.div className="z-20 min-w-[2000px] h-[1px] bg-white"></motion.div>
+            }
+        </motion.div>
 	);
 };
 

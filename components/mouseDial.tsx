@@ -2,7 +2,6 @@
 
 import { map } from "@/libs/util";
 import { motion, useAnimate } from "framer-motion";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
@@ -68,7 +67,8 @@ function MouseDial() {
 	const bannerTopMotion = () => {
 		const dist = distanceToCenter(false);
 		const u_dist = distanceToCenter(true);
-		const opacity = dist > 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		let opacity: number = (dist > 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		if (isNaN(opacity)) opacity = 0;
 		const xPos = dist * 0.9 + 200;
 		return {
 			opacity,
@@ -78,7 +78,9 @@ function MouseDial() {
 	const bannerBottomMotion = () => {
 		const dist = distanceToCenter(false);
 		const u_dist = distanceToCenter(true);
-		const opacity = dist < 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		let opacity = dist < 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
+		if (isNaN(opacity)) opacity = 0;
+
 		const xPos = dist * 0.9 - 600;
 		return {
 			opacity,
@@ -88,7 +90,9 @@ function MouseDial() {
 
 	const archLinkMotion = () => {
 		const dist = distanceToCenter(false);
-		const opacity = map(dist, 0, -centerX, 0, 1.0);
+		let opacity = map(dist, 0, -centerX, 0, 1.0);
+		if (isNaN(opacity)) opacity = 0;
+		
 		return {
 			opacity,
 		};
