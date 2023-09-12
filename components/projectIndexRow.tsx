@@ -1,4 +1,4 @@
-import { useArchStore } from "@/libs/stateManagement";
+import { useArchStore } from "@/stores/archStore";
 import { motion } from "framer-motion";
 import React from "react";
 

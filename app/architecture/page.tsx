@@ -1,9 +1,9 @@
 "use client";
 
 import ProjectContent from "@/components/projectContent";
-import ProjectIndexRow from "@/components/ProjectIndexRow";
+import ProjectIndexRow from "@/components/projectIndexRow";
 import Trackpoint from "@/components/Trackpoint";
-import { useArchStore } from "@/libs/stateManagement";
+import { useArchStore } from "@/stores/archStore";
 import { isBrowser } from "@/libs/util";
 import { IPosition } from "@/types/IPosition";
 import { motion, useAnimate } from "framer-motion";
@@ -11,7 +11,6 @@ import React, { Component, useEffect, useState } from "react";
 
 function Architecture() {
 
-    const archStore = useArchStore();    
 	const [scope, animate] = useAnimate();
     const [project, setProject] = useState("none");
     const [animateDot, setAnimateDot] = useState(false);
