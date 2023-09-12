@@ -1,7 +1,7 @@
 "use client";
 
 import ProjectContent from "@/components/projectContent";
-import ProjectIndexRow from "@/components/projectIndexRow";
+import ProjectIndexRow from "@/components/ProjectIndexRow";
 import Trackpoint from "@/components/Trackpoint";
 import { useArchStore } from "@/stores/archStore";
 import { isBrowser } from "@/libs/util";

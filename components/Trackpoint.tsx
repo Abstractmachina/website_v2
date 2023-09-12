@@ -11,7 +11,7 @@ type TrackpointProps = {
 };
 
 const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
-	const { previewIsVisible } = useArchStore();
+	const { previewIsVisible, previewPostion } = useArchStore();
 
 	// sizes in rem
 	const expandedSize: number = 6;
@@ -42,21 +42,31 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 		<motion.div
 			id="trackpoint"
 			className="fixed w-4 h-4 rounded-full inset-x-0 inset-y-0 mx-auto z-10 flex items-center overflow-visible justify-end"
-			style={{ backgroundColor: "#171717", }}
+			style={{ backgroundColor: "#171717" }}
 			initial={{
 				y: isBrowser() ? window.innerHeight / 2 : 0,
 			}}
 			animate={{
-				y: pos.y - yShift,
+				y: previewIsVisible ? previewPostion.y - 25 : pos.y - yShift,
 				height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 				width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 			}}
-            transition={{ type: "tween", duration: 0.1 }}
-        >
-            { previewIsVisible &&
-                <motion.div className="z-20 min-w-[2000px] h-[1px] bg-white"></motion.div>
-            }
-        </motion.div>
+            transition={{ type: "tween", duration: 0.2 }}
+		>
+			<motion.div
+				className=" h-[1px] bg-red-400 absolute mt-1"
+                style={{
+                    width: 10,
+                }}
+                animate={{
+                    width: previewIsVisible ? 500 : 10,
+                    paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`
+                }}
+                transition={{ type: "tween", duration: 0.4 }}
+
+                
+			></motion.div>
+		</motion.div>
 	);
 };
 
