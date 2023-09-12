@@ -58,7 +58,7 @@ const Trackpoint: FC<TrackpointProps> = ({ pos }): ReactElement => {
 				height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 				width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 			}}
-            transition={{ type: "tween", duration: 0.2 }}
+            transition={{ type: "tween", duration: 0.1 }}
         >
             {/* underline */}
 			<motion.div

@@ -11,6 +11,7 @@ import React, { Component, useEffect, useState } from "react";
 
 function Architecture() {
 
+    const archStore = useArchStore();
 	const [scope, animate] = useAnimate();
     const [project, setProject] = useState("none");
     const [animateDot, setAnimateDot] = useState(false);
@@ -63,7 +64,7 @@ function Architecture() {
 
             {/* project content */}
             {
-                project != 'none' && <ProjectContent />
+                archStore.selectedProject != 'none' && <ProjectContent />
             }
             
 		</div>
