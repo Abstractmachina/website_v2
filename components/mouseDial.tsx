@@ -1,7 +1,7 @@
 "use client";
 
 import { map } from "@/libs/util";
-import { useGlobalCurrentPage } from "@/stores/globalStore";
+import { useGlobalActions, useGlobalCurrentPage } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
 import { motion, useAnimate } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -13,8 +13,8 @@ import React, { useState, useEffect, useRef } from "react";
 function MouseDial() {
 	// state
 	const currentPage = useGlobalCurrentPage();
-
-	const centerLineRef = useRef<HTMLDivElement>();
+	const { setCurrentPage } = useGlobalActions();
+	const [mouseAnimateable, setMouseAnimateable] = useState(false);
 
 	const router = useRouter();
 	const [scope, animate] = useAnimate();
@@ -45,8 +45,13 @@ function MouseDial() {
 		// set up when coming from arch projects
 		if (currentPage == Page.ARCH) {
 			const doEntryAnimations = async () => {
+				const centerline = document.getElementById('centerline');
+				console.log(centerline);
+				await animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: 0, ease: "linear" });
 
 			}
+			doEntryAnimations();
+			setCurrentPage(Page.HOME);
 		}
 		if (isBrowser) {
 			window.addEventListener("mousemove", handleMouse);
@@ -168,7 +173,7 @@ function MouseDial() {
 			</motion.div>
 
 			{/* _______________	center line ________________________ */}
-			<motion.div ref={centerLineRef } id="centerline" className="h-px fixed bg-black"
+			<motion.div id="centerline" className="h-px fixed bg-black"
 				style={centerLineMotion()}></motion.div>
 			
 			{/* _______________	tag line 	________________________*/}

@@ -1,4 +1,4 @@
-import { useArchActions, useArchStore } from '@/stores/archStore'
+import { useArchActions } from '@/stores/archStore'
 import React from 'react'
 
 function CloseProjectButton() {

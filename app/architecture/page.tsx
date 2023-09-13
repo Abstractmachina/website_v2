@@ -10,19 +10,19 @@ import { motion, useAnimate } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Button_home from "@/components/Button_home";
 import { useRouter } from "next/navigation";
-import { useGlobalActions, useGlobalNextPage } from "@/stores/globalStore";
+import { useGlobalActions, useGlobalCurrentPage, useGlobalNextPage, useGlobalStore } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
 
 function Architecture() {
 	// state management
 	// global store
 	const nextPage = useGlobalNextPage();
-	const { setNextPage } = useGlobalActions();
+	const currentPage = useGlobalCurrentPage();
+	const { setCurrentPage, setNextPage } = useGlobalActions();
 	// arch store
 	const selectedProject = useArchSelectedProject();
 	const { setTrackpointAnimateable, setProjecIndexScrollY } = useArchActions();
 
-	const [pos, setPos] = useState(isBrowser() ? ({ x: window.innerWidth / 2, y: window.innerHeight / 2 } as IPosition) : ({ x: 0, y: 0 } as IPosition));
 	
 	// routing
 	const router = useRouter();
@@ -30,17 +30,36 @@ function Architecture() {
 	// animation
 	const [scope, animate] = useAnimate();
 	const exitAnimationDuration = 1;
+	const enterAnimationDuration = 0.2;
 
 	useEffect(() => {
+
+		setCurrentPage(Page.ARCH);
+
+
 		const initAnim = async () => {
-			await Promise.all([animate("#container_projectindex", { width: "50%", padding: "4rem" }, { duration: 1, ease: "easeOut" }), animate("#projects", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }), animate("#title_arch", { x: 0 }, { duration: 1, ease: "easeOut", delay: 1 }), animate("#trackpoint", { backgroundColor: "#ffffff" }, { duration: 1, ease: "easeOut", delay: 1 })]);
+			await Promise.all([
+				animate("#container_projectindex", { width: "50%", padding: "4rem" }, { duration: enterAnimationDuration, ease: "easeOut" }),
+				animate("#projects", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 }),
+				animate("#title_arch", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 }),
+				animate("#trackpoint", { backgroundColor: "#ffffff" }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 })]);
 
 			setTrackpointAnimateable(true);
 
 		};
 
+		// setCurrentPage(Page.ARCH);
+		// console.log('current page: ' + currentPage);
+		// setCurrentPage(Page.ABOUT);
+		// console.log('current page: ' + currentPage);
+		
 		initAnim();
+
 	}, []);
+
+	useEffect(() =>{
+		console.log('current page: ' + Page[currentPage]);
+	}, [currentPage])
 
 	useEffect(() => {
 		setTrackpointAnimateable(false);
@@ -56,13 +75,17 @@ function Architecture() {
 			// 	// animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 			// 	// animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 			// ]);
-			await animate("#trackpoint", { y: isBrowser() ? window.innerWidth / 2 : 0, backgroundColor: '#171717' }, { duration: exitAnimationDuration, ease: "linear" });
-				await animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
+			await Promise.all([
+				animate("#trackpoint", { backgroundColor: '#171717' }, { duration: exitAnimationDuration, ease: "linear" }),
+				animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut", delay:1 })
+			])
+			
 			console.log("finished");
 			setNextPage(Page.NONE);
 			console.log(Page[nextPage]);
 			router.push('/');
-		}
+		};
+
 		if (nextPage == Page.HOME) {
 			// exit to home animation
 			exitToHomeAsync();

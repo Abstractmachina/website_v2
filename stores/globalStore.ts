@@ -12,7 +12,7 @@ interface IGlobalStore {
     }
 }
 
-const useGlobalStore = create < IGlobalStore>()((set) => ({
+export const useGlobalStore = create < IGlobalStore>()((set) => ({
     currentPage: Page.HOME,
     // next page is set before routing. This is necessary as framer motion animatepresence is not currently functional in nextjs, so need to use useAnimate to manually set transitions. after successful transition, nextpage should be set to NONE again, until the user is rerouted. 
     nextPage: Page.NONE,
