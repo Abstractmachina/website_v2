@@ -54,11 +54,12 @@ const Trackpoint = () => {
 	}
 	
 	function getFinalYPos() {
-
-
-		return previewIsVisible ?
-			(previewPostion.y - baseFontSize * 3 - scrollY) :
-			(mousePos.y? mousePos.y : 0 - yShift);
+		if (isAnimateable) {
+			return previewIsVisible ?
+				(previewPostion.y - baseFontSize * 3 - scrollY) :
+				(mousePos.y? mousePos.y : 0 - yShift);
+		}
+		return (isBrowser() ? window.innerHeight / 2 : 0)
 	}
 
 	return (
@@ -72,9 +73,9 @@ const Trackpoint = () => {
 				y: isBrowser() ? window.innerHeight / 2 : 0,
 			}}
 			animate={{
-				y: isAnimateable ? getFinalYPos() : window.innerHeight / 2,
-				height: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
-				width: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
+				y: getFinalYPos(),
+				height: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
+				width: isAnimateable ?  (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
 			}}
             transition={{ type: "tween", duration: 0.1 }}
         >

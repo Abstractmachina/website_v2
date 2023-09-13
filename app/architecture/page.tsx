@@ -45,10 +45,25 @@ function Architecture() {
 	useEffect(() => {
 		setTrackpointAnimateable(false);
 		const exitToHomeAsync = async () => {
-			await exitPageToHome();
+			// await Promise.all([
+			// 	animate("#trackpoint", {
+			// 		y: isBrowser() ? window.innerWidth / 2 : 0,
+			// 		backgroundColor: '#171717',
+			// 	}, { duration: exitAnimationDuration, ease: "linear" }),
+			// 	animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
+			// 	// animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: exitAnimationDuration, ease: "linear" }),
+			// 	// animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			// 	// animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			// 	// animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			// ]);
+			await animate("#trackpoint", { y: isBrowser() ? window.innerWidth / 2 : 0, backgroundColor: '#171717' }, { duration: exitAnimationDuration, ease: "linear" });
+				await animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
+			console.log("finished");
+			setNextPage(Page.NONE);
+			console.log(Page[nextPage]);
+			router.push('/');
 		}
 		if (nextPage == Page.HOME) {
-
 			// exit to home animation
 			exitToHomeAsync();
 
@@ -71,17 +86,19 @@ function Architecture() {
 	}
 	
 	async function exitPageToHome() {
-
-		 
 		await Promise.all([
-			animate("#trackpoint", { y: isBrowser() ? window.innerWidth/2 : 0 }, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#trackpoint", {
+				y: isBrowser() ? window.innerWidth / 2 : 0,
+				backgroundColor: '#171717',
+			}, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
 			// animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: exitAnimationDuration, ease: "linear" }),
 			// animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 			// animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 			// animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 		]);
 		setNextPage(Page.NONE);
-		// router.push('/');
+		router.push('/');
 	} 
 
 	// =================		DOM			=======================

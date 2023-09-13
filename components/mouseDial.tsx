@@ -1,11 +1,21 @@
 "use client";
 
 import { map } from "@/libs/util";
+import { useGlobalCurrentPage } from "@/stores/globalStore";
+import { Page } from "@/types/enum_page";
 import { motion, useAnimate } from "framer-motion";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+
+
 
 function MouseDial() {
+	// state
+	const currentPage = useGlobalCurrentPage();
+
+	const centerLineRef = useRef<HTMLDivElement>();
+
 	const router = useRouter();
 	const [scope, animate] = useAnimate();
 	const isBrowser = typeof window !== "undefined";
@@ -19,8 +29,25 @@ function MouseDial() {
 	const [x, setX] = useState(centerX);
 	const [y, setY] = useState(Math.round(centerY));
 
+
+
+	// styles
+
+	const style_centerLineEnd = {
+		rotateZ: -90, width: centerX * 4
+	}
+	const style_centerLineStart = {
+		rotateZ: 0, width: 2
+	}
+
 	// attach event listener to window when component is mounted
 	useEffect(() => {
+		// set up when coming from arch projects
+		if (currentPage == Page.ARCH) {
+			const doEntryAnimations = async () => {
+
+			}
+		}
 		if (isBrowser) {
 			window.addEventListener("mousemove", handleMouse);
 		}
@@ -108,6 +135,10 @@ function MouseDial() {
 		router.push('/architecture');
 	};
 
+	const enterPageFromArchProjects = async () => {
+
+	}
+
 	return (
 		<div ref={scope} className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
 			<motion.div key={"dial_link_arch"} style={archLinkMotion()}>
@@ -124,6 +155,7 @@ function MouseDial() {
 
 			{/* center circle */}
 			<div className="fixed w-4 h-4 bg-black rounded-full"></div>
+
 			{/* Hi Im Tao */}
 			<motion.div
 				id="myName"
@@ -134,9 +166,12 @@ function MouseDial() {
 			>
 				<h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
 			</motion.div>
-			{/* center line */}
-			<motion.div id="centerline" className="h-px fixed bg-black" style={centerLineMotion()}></motion.div>
-			{/* tag line */}
+
+			{/* _______________	center line ________________________ */}
+			<motion.div ref={centerLineRef } id="centerline" className="h-px fixed bg-black"
+				style={centerLineMotion()}></motion.div>
+			
+			{/* _______________	tag line 	________________________*/}
 			<motion.div
 				id="tagline"
 				className="fixed bottom-1/3"
