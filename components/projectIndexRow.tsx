@@ -1,4 +1,4 @@
-import { useArchActions, useArchPreviewVisibility, useArchSelectedProject, useArchStore } from "@/stores/archStore";
+import { useArchActions, useArchSelectedProject } from "@/stores/archStore";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
