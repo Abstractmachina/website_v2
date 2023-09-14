@@ -2,7 +2,7 @@
 
 import globalConfigs from "@/GLOBAL.config";
 import Footer from "@/components/Footer";
-import HomeCenterDial from "@/components/HomeCenterDial";
+import HomeCenterLine from "@/components/HomeCenterLine";
 import { distance } from "@/libs/geometry";
 import { isBrowser, map } from "@/libs/util";
 import { useGlobalActions, useGlobalCurrentPage } from "@/stores/globalStore";
@@ -169,7 +169,7 @@ export default function Home() {
 				<h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
 			</motion.div>
 
-			<HomeCenterDial />
+			<HomeCenterLine />
 
 			{/* _______________	tag line 	________________________*/}
 			<motion.div

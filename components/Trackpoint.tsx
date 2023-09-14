@@ -15,11 +15,13 @@ import useMousePosition from "@/hooks/useMousePosition";
 
 const Trackpoint = () => {
 	// state
+	// arch store
 	const previewIsVisible = useArchPreviewVisibility();
 	const previewPostion = useArchPreviewPosition();
 	const isAnimateable = useArchTrackpointAnimateable();
 	const scrollY = useArchIndexScrollY();
-
+	// global store
+	const centerCoord = u
 	
 	// sizes in rem
 	const expandedSize: number = 6;

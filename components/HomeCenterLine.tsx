@@ -18,7 +18,7 @@ enum AnimationState {
 	ONMOUSEMOVE,
 }
 
-function HomeCenterDial() {
+function HomeCenterLine() {
 	// state
 	const centerCoord = useHomeCenterCoordinate();
 
@@ -90,4 +90,4 @@ function HomeCenterDial() {
 	);
 }
 
-export default HomeCenterDial;
+export default HomeCenterLine;
