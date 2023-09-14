@@ -187,7 +187,7 @@ export default function Home() {
 			</motion.div>
 
 			{/* ________	link element to architecture projects page	________ */}
-			<motion.div id="link_arch" className="fixed top-0 left-0 h-full z-10 hover:cursor-pointer"
+			<motion.div id="link_arch" className="fixed top-0 left-0 h-1/2 z-10 hover:cursor-pointer"
 				style={{
 					backgroundColor: globalConfigs.color_accent,
 					width: 0
