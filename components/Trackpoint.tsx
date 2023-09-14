@@ -4,7 +4,7 @@ import {
 	useArchIndexScrollY,
 	useArchPreviewPosition, useArchPreviewVisibility, useArchTrackpointAnimateable } from "@/stores/archStore";
 import { isBrowser } from "@/libs/util";
-import { IPosition } from "@/types/IPosition";
+import { IVec2d } from "@/types/IVec2d";
 import { motion } from "framer-motion";
 import React, { FC, ReactElement, useState, useEffect } from "react";
 import useMousePosition from "@/hooks/useMousePosition";

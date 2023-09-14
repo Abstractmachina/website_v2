@@ -6,187 +6,74 @@ import { Page } from "@/types/enum_page";
 import { motion, useAnimate } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
+import globalConfigs from "@/GLOBAL.config";
+import useMousePosition from "@/hooks/useMousePosition";
+import { useHomeCenterCoordinate } from "@/stores/homeStore";
+import { distance } from "@/libs/geometry";
 
-
-
+enum AnimationState {
+	START,
+	END,
+	ONMOUSEMOVE
+}
 
 function MouseDial() {
 	// state
-	const currentPage = useGlobalCurrentPage();
-	const { setCurrentPage } = useGlobalActions();
-	const [mouseAnimateable, setMouseAnimateable] = useState(false);
+	const centerCoord = useHomeCenterCoordinate();
 
-	const router = useRouter();
+	const mousePos = useMousePosition();
 	const [scope, animate] = useAnimate();
-	const isBrowser = typeof window !== "undefined";
-	const centerX = Math.round(isBrowser ? window.innerWidth / 2 : 0);
-	const centerY = Math.round(isBrowser ? window.innerHeight / 2 : 0);
+	const [animationState, setAnimationState] = useState(AnimationState.START);
+
+
+
+	// settings
 	const lineWidthThreshold = 150;
 	const rotationThreshold = 200;
 
-	const exitAnimationDuration = 0.2;
-
-	const [x, setX] = useState(centerX);
-	const [y, setY] = useState(Math.round(centerY));
-
-
-
-	// styles
-
-	const style_centerLineEnd = {
-		rotateZ: -90, width: centerX * 4
-	}
-	const style_centerLineStart = {
-		rotateZ: 0, width: 2
-	}
-
-	// attach event listener to window when component is mounted
-	useEffect(() => {
-		// set up when coming from arch projects
-		if (currentPage == Page.ARCH) {
-			const doEntryAnimations = async () => {
-				const centerline = document.getElementById('centerline');
-				console.log(centerline);
-				await animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: 0, ease: "linear" });
-
-			}
-			doEntryAnimations();
-			setCurrentPage(Page.HOME);
-		}
-		if (isBrowser) {
-			window.addEventListener("mousemove", handleMouse);
-		}
-	}, []);
-
-	const handleMouse = (e: MouseEvent): void => {
-		setX(e.pageX);
-		setY(e.pageY);
-	};
-
-	const distanceToCenter = (unsigned: boolean): number => {
-		let dist = x - centerX;
-		return unsigned ? Math.abs(dist) : dist;
-	};
-
-	const translateRotation = (): number => {
-		const dist = distanceToCenter(false);
+	function translateRotation(): number {
+		const dist = distance(mousePos, centerCoord).x!;
 		const u_dist = Math.abs(dist);
 		if (u_dist < rotationThreshold) return 0;
 
-		const val = map(u_dist, rotationThreshold, centerX, 0, 100);
+		const val = map(u_dist, rotationThreshold, centerCoord.x!, 0, 100);
 		const sign = dist / u_dist;
 		// angle caps at 90
 		return val > 90 || val < -90 ? 90 * sign : val * sign;
 	};
 
-	const translateWidth = (): number => {
-		const u_dist = distanceToCenter(true);
+	function translateWidth(): number {
+		const u_dist = distance(mousePos, centerCoord, false).x!;
 		if (u_dist < lineWidthThreshold) return 0;
 		return map(u_dist, lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
 	};
 
-	const centerLineMotion = () => {
-		return {
+	const variants = {
+		start: { rotateZ: 0, width: 0 },
+		end: { rotateZ: -90, width: 4000 },
+		mouseTrackable: {
 			rotateZ: translateRotation(),
-			width: translateWidth(),
-		};
-	};
-
-	const translateX = (): number => {
-		return (x - centerX) * 0.3;
-	};
-
-	const bannerTopMotion = () => {
-		const dist = distanceToCenter(false);
-		const u_dist = distanceToCenter(true);
-		let opacity: number = (dist > 0) ? 0 : map(u_dist, 0, centerX, 0, 1.0);
-		if (isNaN(opacity)) opacity = 0;
-		const xPos = dist * 0.9 + 200;
-		return {
-			opacity,
-			x: xPos,
-		};
-	};
-	const bannerBottomMotion = () => {
-		const dist = distanceToCenter(false);
-		const u_dist = distanceToCenter(true);
-		let opacity = dist < 0 ? 0 : map(u_dist, 0, centerX, 0, 1.0);
-		if (isNaN(opacity)) opacity = 0;
-
-		const xPos = dist * 0.9 - 600;
-		return {
-			opacity,
-			x: xPos,
-		};
-	};
-
-	const archLinkMotion = () => {
-		const dist = distanceToCenter(false);
-		let opacity = map(dist, 0, -centerX, 0, 1.0);
-		if (isNaN(opacity)) opacity = 0;
-		
-		return {
-			opacity,
-		};
-	};
-
-	const exitPageToArchprojects = async () => {
-		await Promise.all([
-			animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: exitAnimationDuration, ease: "linear" }),
-			animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-		]);
-		router.push('/architecture');
-	};
-
-	const enterPageFromArchProjects = async () => {
-
-	}
+			width: translateWidth()
+		}
+	  }
 
 	return (
-		<div ref={scope} className="flex fixed min-w-full min-h-full top-0 left-0 justify-center items-center">
-			<motion.div key={"dial_link_arch"} style={archLinkMotion()}>
-				<div id="link_arch" onClick={exitPageToArchprojects} className="fixed top-0 left-0 h-full w-1/3 bg-gradient-to-r from-yellow-200 z-10"></div>
-			</motion.div>
-
-			{/* Arch Banner */}
-			<motion.div id="banner_arch" style={bannerTopMotion()}>
-				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Architecture</h1>
-			</motion.div>
-			<motion.div style={bannerBottomMotion()}>
-				<h1 className="font-monolisk text-yellow-300 text-9xl fixed bottom-48 ">Software Development</h1>
-			</motion.div>
+		<div className="">
 
 			{/* center circle */}
-			<div className="fixed w-4 h-4 bg-black rounded-full"></div>
-
-			{/* Hi Im Tao */}
-			<motion.div
-				id="myName"
-				className="fixed top-1/3"
+			<div className="fixed w-4 h-4 bg-black rounded-full"
 				style={{
-					x: translateX(),
+					width: globalConfigs.trackpoint_defaultSize,
+					height: globalConfigs.trackpoint_defaultSize,
 				}}
-			>
-				<h1 className=" font-inter">Hi, I&rsquo;m Tao</h1>
-			</motion.div>
-
+				
+			></div>
 			{/* _______________	center line ________________________ */}
-			<motion.div id="centerline" className="h-px fixed bg-black"
-				style={centerLineMotion()}></motion.div>
-			
-			{/* _______________	tag line 	________________________*/}
-			<motion.div
-				id="tagline"
-				className="fixed bottom-1/3"
-				style={{
-					x: translateX() * -1,
-					rotateZ: 0,
-				}}
-			>
-				<p>a computational architect and fullstack developer</p>
-			</motion.div>
+			<motion.div id="centerline" className="h-[1px] fixed bg-black"
+				animate={
+					variants.mouseTrackable
+				}
+				></motion.div>
 		</div>
 	);
 }

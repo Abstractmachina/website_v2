@@ -1,10 +1,10 @@
-import { IPosition } from '@/types/IPosition';
+import { IVec2d } from '@/types/IVec2d';
 import { create } from 'zustand'
 
 
 interface IArchStore {
     previewIsVisible: boolean,
-    previewPostion: IPosition,
+    previewPostion: IVec2d,
     selectedProject: string,
     trackpointAnimateable: boolean,
     projectIndexScrollY: number,
@@ -34,7 +34,7 @@ const useArchStore = create<IArchStore>()((set) => ({
 
 
 export const useArchPreviewVisibility = () : boolean => useArchStore((state) => state.previewIsVisible);
-export const useArchPreviewPosition = (): IPosition => useArchStore((state) => state.previewPostion);
+export const useArchPreviewPosition = (): IVec2d => useArchStore((state) => state.previewPostion);
 export const useArchSelectedProject = () => useArchStore((state) => state.selectedProject);
 export const useArchTrackpointAnimateable = () => useArchStore((state) => state.trackpointAnimateable);
 export const useArchIndexScrollY = () => useArchStore((state) => state.projectIndexScrollY);

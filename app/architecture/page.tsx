@@ -5,7 +5,7 @@ import ProjectIndexRow from "@/components/ProjectIndexRow";
 import Trackpoint from "@/components/Trackpoint";
 import { useArchActions, useArchSelectedProject } from "@/stores/archStore";
 import { isBrowser } from "@/libs/util";
-import { IPosition } from "@/types/IPosition";
+import { IVec2d } from "@/types/IVec2d";
 import { motion, useAnimate } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Button_home from "@/components/Button_home";
@@ -29,7 +29,7 @@ function Architecture() {
 	
 	// animation
 	const [scope, animate] = useAnimate();
-	const exitAnimationDuration = 1;
+	const exitAnimationDuration = 0.2;
 	const enterAnimationDuration = 0.2;
 
 	useEffect(() => {
@@ -64,25 +64,11 @@ function Architecture() {
 	useEffect(() => {
 		setTrackpointAnimateable(false);
 		const exitToHomeAsync = async () => {
-			// await Promise.all([
-			// 	animate("#trackpoint", {
-			// 		y: isBrowser() ? window.innerWidth / 2 : 0,
-			// 		backgroundColor: '#171717',
-			// 	}, { duration: exitAnimationDuration, ease: "linear" }),
-			// 	animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
-			// 	// animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// 	// animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// 	// animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// 	// animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// ]);
 			await Promise.all([
 				animate("#trackpoint", { backgroundColor: '#171717' }, { duration: exitAnimationDuration, ease: "linear" }),
-				animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut", delay:1 })
+				animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: exitAnimationDuration, ease: "easeOut", delay:1 })
 			])
-			
-			console.log("finished");
 			setNextPage(Page.NONE);
-			console.log(Page[nextPage]);
 			router.push('/');
 		};
 
@@ -90,6 +76,9 @@ function Architecture() {
 			// exit to home animation
 			exitToHomeAsync();
 
+		}
+		else if (nextPage == Page.ABOUT) {
+			router.push('/about')
 		}
 	}, [nextPage])
 

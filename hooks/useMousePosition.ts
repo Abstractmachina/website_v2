@@ -1,9 +1,10 @@
+import { IVec2d } from '@/types/IVec2d';
 import React from 'react';
 const useMousePosition = () => {
   const [
     mousePosition,
     setMousePosition
-  ] = React.useState({ x: null, y: null });
+  ] = React.useState({ x: null, y: null } as IVec2d);
   React.useEffect(() => {
     const updateMousePosition = (ev:any) => {
       setMousePosition({ x: ev.clientX, y: ev.clientY });
