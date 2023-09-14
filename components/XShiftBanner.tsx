@@ -39,10 +39,6 @@ const ShiftTranslateTextBox: FC<XShiftBannerProps> = ({ id, text, fontsize, anch
 		// return (x - centerX) * 0.3;
 	};
 
-	function calcInitialX() {
-		if (align == Alignment.CENTER) {
-		}
-	}
 
 	return (
 		<motion.div

@@ -134,16 +134,6 @@ function Architecture() {
 
 	return (
 		<main ref={scope} className="fixed flex min-h-full min-w-full top-0 left-0">
-
-			<div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
-				style={{
-					top: centerCoord.y!,
-					left: centerCoord.x!
-				}}
-			>
-				
-			</div>
-
 			{/* center circle */}
 			<Trackpoint />
 

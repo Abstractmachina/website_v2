@@ -84,19 +84,6 @@ export default function Home() {
 		setMousePos({ x: e.pageX, y: e.pageY });
 	};
 
-	const bannerBottomMotion = () => {
-		const dist = distance(centerCoord, mousePos).x!;
-		const u_dist = distance(mousePos, centerCoord, false).x!;
-		let opacity = dist < 0 ? 0 : map(u_dist, 0, centerCoord.x!, 0, 1.0);
-		if (isNaN(opacity)) opacity = 0;
-
-		const xPos = dist * 0.9 - 600;
-		return {
-			opacity,
-			x: xPos,
-		};
-	};
-
 	const archLinkMotion = () => {
 		// let dist = distance(mousePos, centerCoord).x!;
 		// try {
@@ -126,11 +113,11 @@ export default function Home() {
 	return (
 		<main className="fixed min-h-full min-w-full top-0 left-0" ref={scope}>
 			
-			<div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
+			{/* <div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
 				style={{
 					top: centerCoord.y!,
 					left: centerCoord.x!
-			}}></div>
+			}}></div> */}
 			
 			
 			<HomeCenterLine />
@@ -160,11 +147,12 @@ export default function Home() {
 
 			{/* __________	Banners	____________________________________ */}
 			{/* Banner architecture */}
-			<motion.div id="banner_arch" className="font-monolisk text-yellow-300 text-9xl fixed"
+			<motion.div id="banner_arch" className="font-monolisk text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x!,
-					opacity: 0
+					opacity: 0,
+					color: globalConfigs.color_accent
 				}}
 				animate={{
 					x: map(getMouseParam().x!, 0, -1, 0, -800),
@@ -179,11 +167,12 @@ export default function Home() {
 			</motion.div>
 
 			{/* banner programming */}
-			<motion.div id="banner_arch" className="font-monolisk text-yellow-300 text-9xl fixed"
+			<motion.div id="banner_arch" className="font-monolisk text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x! - 500,
-					opacity: 0
+					opacity: 0,
+					color: globalConfigs.color_accent
 				}}
 				animate={{
 					x: map(getMouseParam().x!, 0, 1, 0, 800),
@@ -198,8 +187,18 @@ export default function Home() {
 			</motion.div>
 
 			{/* ________	link element to architecture projects page	________ */}
-			<motion.div id="link_arch" className="fixed top-0 left-0 h-full w-10 z-10 hover:cursor-pointer"
-				style={{ backgroundColor: globalConfigs.color_accent }}
+			<motion.div id="link_arch" className="fixed top-0 left-0 h-full z-10 hover:cursor-pointer"
+				style={{
+					backgroundColor: globalConfigs.color_accent,
+					width: 0
+				}}
+				animate={{
+					width: map(getMouseParam().x!, 0, -1, 0, 100)
+				}}
+				transition={{
+					type: "tween",
+					duration: 0.01
+				}}
 				onClick={exitPageToArchprojects} >
 			</motion.div>
 		</main>
