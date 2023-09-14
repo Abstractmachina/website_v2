@@ -1,6 +1,6 @@
 "use client";
 
-import { map } from "@/libs/util";
+import { getRootFontSize, map } from "@/libs/util";
 import { useGlobalActions, useGlobalCurrentPage } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
 import { motion, useAnimate } from "framer-motion";
@@ -10,14 +10,15 @@ import globalConfigs from "@/GLOBAL.config";
 import useMousePosition from "@/hooks/useMousePosition";
 import { useHomeCenterCoordinate } from "@/stores/homeStore";
 import { distance } from "@/libs/geometry";
+import { IVec2d } from "@/types/IVec2d";
 
 enum AnimationState {
 	START,
 	END,
-	ONMOUSEMOVE
+	ONMOUSEMOVE,
 }
 
-function MouseDial() {
+function HomeCenterDial() {
 	// state
 	const centerCoord = useHomeCenterCoordinate();
 
@@ -25,14 +26,12 @@ function MouseDial() {
 	const [scope, animate] = useAnimate();
 	const [animationState, setAnimationState] = useState(AnimationState.START);
 
-
-
 	// settings
 	const lineWidthThreshold = 150;
 	const rotationThreshold = 200;
 
-	function translateRotation(): number {
-		const dist = distance(mousePos, centerCoord).x!;
+	const translateRotation = (): number => {
+		const dist = distance(centerCoord, mousePos).x!;
 		const u_dist = Math.abs(dist);
 		if (u_dist < rotationThreshold) return 0;
 
@@ -42,7 +41,7 @@ function MouseDial() {
 		return val > 90 || val < -90 ? 90 * sign : val * sign;
 	};
 
-	function translateWidth(): number {
+	const translateWidth = (): number => {
 		const u_dist = distance(mousePos, centerCoord, false).x!;
 		if (u_dist < lineWidthThreshold) return 0;
 		return map(u_dist, lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
@@ -53,29 +52,42 @@ function MouseDial() {
 		end: { rotateZ: -90, width: 4000 },
 		mouseTrackable: {
 			rotateZ: translateRotation(),
-			width: translateWidth()
+			width: translateWidth(),
+			transition: {
+				type: "tween",
+				duration: 0.1
+			}
+		},
+	};
+
+	function computeCenterPoint() : IVec2d {
+		const rootFontSize = getRootFontSize();
+		return {
+			x: centerCoord.x! - parseInt(globalConfigs.trackpoint_defaultSize, 10) * rootFontSize / 2,
+			y: centerCoord.y! - parseInt(globalConfigs.trackpoint_defaultSize, 10) * rootFontSize / 2
 		}
-	  }
+	}
 
 	return (
-		<div className="">
-
-			{/* center circle */}
-			<div className="fixed w-4 h-4 bg-black rounded-full"
-				style={{
-					width: globalConfigs.trackpoint_defaultSize,
-					height: globalConfigs.trackpoint_defaultSize,
-				}}
-				
-			></div>
+		<div id="centerpoint"
+			className="fixed rounded-full mx-auto z-10 overflow-visible flex items-center justify-center"
+			style={{
+				backgroundColor: globalConfigs.color_dark,
+				width: globalConfigs.trackpoint_defaultSize,
+				height: globalConfigs.trackpoint_defaultSize,
+				top: computeCenterPoint().y!,
+				left: computeCenterPoint().x!
+			}}
+		>
 			{/* _______________	center line ________________________ */}
-			<motion.div id="centerline" className="h-[1px] fixed bg-black"
-				animate={
-					variants.mouseTrackable
-				}
-				></motion.div>
+			<motion.div
+				id="centerline"
+				className="h-[0.5px] absolute bg-red-500 z-20 border-none"
+				animate='mouseTrackable'
+				variants={variants}
+			></motion.div>
 		</div>
 	);
 }
 
-export default MouseDial;
+export default HomeCenterDial;
