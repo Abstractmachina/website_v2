@@ -10,19 +10,29 @@ import { motion, useAnimate } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Button_home from "@/components/Button_home";
 import { useRouter } from "next/navigation";
-import { useGlobalActions, useGlobalCurrentPage, useGlobalNextPage, useGlobalStore } from "@/stores/globalStore";
+import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage, useGlobalNextPage, useGlobalStore } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
+import { getWindowCenterCoordinate } from "@/libs/geometry";
 
 function Architecture() {
 	// state management
 	// global store
 	const nextPage = useGlobalNextPage();
 	const currentPage = useGlobalCurrentPage();
-	const { setCurrentPage, setNextPage } = useGlobalActions();
+	const centerCoord = useGlobalCenterCoordinate();
+	const { setCurrentPage, setNextPage, setCenterCoord } = useGlobalActions();
 	// arch store
 	const selectedProject = useArchSelectedProject();
 	const { setTrackpointAnimateable, setProjecIndexScrollY } = useArchActions();
 
+	useEffect(() => {
+		if (!centerCoord.x || !centerCoord.y) getWindowCenterCoordinate(setCenterCoord);
+
+		window.addEventListener("resize", handleWindowSizeChange);
+		return () => {
+			window.removeEventListener("resize", handleWindowSizeChange);
+		};
+	}, []);
 	
 	// routing
 	const router = useRouter();
@@ -54,6 +64,8 @@ function Architecture() {
 		// console.log('current page: ' + currentPage);
 		
 		initAnim();
+
+		console.log(centerCoord);
 
 	}, []);
 
@@ -87,6 +99,11 @@ function Architecture() {
 	// 	if (animateDot) setPos({ x: e.pageX, y: e.pageY });
 	// };
 
+	function handleWindowSizeChange() {
+		getWindowCenterCoordinate(setCenterCoord);
+	}
+
+
 	/**
 	 * fetch project from database with provided id string
 	 */
@@ -116,7 +133,17 @@ function Architecture() {
 	// =================		DOM			=======================
 
 	return (
-		<div ref={scope} className="flex min-h-screen h-full w-full">
+		<main ref={scope} className="fixed flex min-h-full min-w-full top-0 left-0">
+
+			<div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
+				style={{
+					top: centerCoord.y!,
+					left: centerCoord.x!
+				}}
+			>
+				
+			</div>
+
 			{/* center circle */}
 			<Trackpoint />
 
@@ -138,7 +165,7 @@ function Architecture() {
 
 			{/* project content */}
 			{selectedProject != "none" && <ProjectContent />}
-		</div>
+		</main>
 	);
 }
 

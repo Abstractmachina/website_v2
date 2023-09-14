@@ -1,9 +1,9 @@
 "use client";
 
-import { getRootFontSize, map } from "@/libs/util";
-import { useGlobalActions, useGlobalCurrentPage } from "@/stores/globalStore";
+import { getRootFontSize, isBrowser, map } from "@/libs/util";
+import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
-import { motion, useAnimate } from "framer-motion";
+import {  motion, useAnimate } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import globalConfigs from "@/GLOBAL.config";
@@ -20,7 +20,7 @@ enum AnimationState {
 
 function HomeCenterLine() {
 	// state
-	const centerCoord = useHomeCenterCoordinate();
+	const centerCoord = useGlobalCenterCoordinate();
 
 	const mousePos = useMousePosition();
 	const [scope, animate] = useAnimate();
@@ -49,13 +49,13 @@ function HomeCenterLine() {
 
 	const variants = {
 		start: { rotateZ: 0, width: 0 },
-		end: { rotateZ: -90, width: 4000 },
+		end: { rotateZ: -90, width: isBrowser() ? window.innerWidth * 3 : 2000 },
 		mouseTrackable: {
 			rotateZ: translateRotation(),
 			width: translateWidth(),
 			transition: {
 				type: "tween",
-				duration: 0.1
+				duration: 0.01
 			}
 		},
 	};
