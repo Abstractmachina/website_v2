@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import HomeCenterLine from "@/components/HomeCenterLine";
 import ShiftTranslateTextBox from "@/components/XShiftBanner";
 import { distance, getWindowCenterCoordinate } from "@/libs/geometry";
+import { uploadProjects } from "@/libs/uploadProjects";
 import { isBrowser, map } from "@/libs/util";
 import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage } from "@/stores/globalStore";
 import { useHomeActions, useHomeCenterCoordinate } from "@/stores/homeStore";
@@ -16,7 +17,7 @@ import { motion, useAnimate } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 
 export default function Home() {
 	// state
@@ -109,6 +110,34 @@ export default function Home() {
 		}
 	}
 
+	const testMongo = async () => {
+		console.log("fetchPostContent called");
+		try {
+			const response = await fetch(`/api/projects/`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					test: "this is a test 00",
+				})
+			})
+	
+			const data = await response.json();
+			console.log(data);
+	
+			if (response.status == 200) {
+				console.log("POST request successful");
+			}
+			else {
+				throw Error("something went wrong!");
+			}
+
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	return (
 		<main className="fixed min-h-full min-w-full top-0 left-0" ref={scope}>
@@ -118,6 +147,10 @@ export default function Home() {
 					top: centerCoord.y!,
 					left: centerCoord.x!
 			}}></div> */}
+
+			<button className="absolute top-1/3 left-1/3
+			bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+			onClick={testMongo}>TEST MONGO</button>
 			
 			
 			<HomeCenterLine />
