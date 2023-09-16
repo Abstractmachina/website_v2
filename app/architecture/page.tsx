@@ -57,22 +57,11 @@ function Architecture() {
 			setTrackpointAnimateable(true);
 
 		};
-
-		// setCurrentPage(Page.ARCH);
-		// console.log('current page: ' + currentPage);
-		// setCurrentPage(Page.ABOUT);
-		// console.log('current page: ' + currentPage);
 		
 		initAnim();
-
-		console.log(centerCoord);
-
 	}, []);
 
-	useEffect(() =>{
-		console.log('current page: ' + Page[currentPage]);
-	}, [currentPage])
-
+	// setup for exiting page
 	useEffect(() => {
 		setTrackpointAnimateable(false);
 		const exitToHomeAsync = async () => {
@@ -95,9 +84,6 @@ function Architecture() {
 	}, [nextPage])
 
 	// =================	event handlers	=======================
-	// const handleMouse = (e: React.MouseEvent) => {
-	// 	if (animateDot) setPos({ x: e.pageX, y: e.pageY });
-	// };
 
 	function handleWindowSizeChange() {
 		getWindowCenterCoordinate(setCenterCoord);
@@ -107,7 +93,15 @@ function Architecture() {
 	/**
 	 * fetch project from database with provided id string
 	 */
-	const fetchProject = async () => { };
+	const fetchProject = async () => { 
+		try {
+			const res = await fetch(`api/projects/printfast1`);
+			const data = await res.json();
+			console.log(data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	function handleScroll(e: any) {
 		const target = e.target;
@@ -121,10 +115,6 @@ function Architecture() {
 				backgroundColor: '#171717',
 			}, { duration: exitAnimationDuration, ease: "linear" }),
 			animate("#container_projectindex", { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" })
-			// animate("#centerline", { rotateZ: -90, width: centerX * 4 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			// animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
 		]);
 		setNextPage(Page.NONE);
 		router.push('/');
@@ -134,6 +124,9 @@ function Architecture() {
 
 	return (
 		<main ref={scope} className="fixed flex min-h-full min-w-full top-0 left-0">
+			<button className="absolute top-1/3 left-1/3
+			bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded z-50"
+			onClick={fetchProject}>Tfetch prohect</button>
 			{/* center circle */}
 			<Trackpoint />
 
