@@ -1,6 +1,7 @@
 import { useArchActions, useArchSelectedProject } from "@/stores/archStore";
+import IndexEntry from "@/types/IndexEntry";
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 
 
 enum ProjectIndexRowState {
@@ -9,8 +10,12 @@ enum ProjectIndexRowState {
   SELECTED
 }
 
+type ProjectIndexRowProps = {
+  entry: IndexEntry;
+}
 
-function ProjectIndexRow() {
+
+const ProjectIndexRow: FC<ProjectIndexRowProps> = ({entry}) : ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // styles
@@ -74,7 +79,7 @@ function ProjectIndexRow() {
   }
 
 	return (
-    <div ref={containerRef} className="flex flex-row justify-between text-white hover:cursor-pointer hover:font-bold"
+    <div key={ entry.title} ref={containerRef} className="flex flex-row justify-between text-white hover:cursor-pointer hover:font-bold"
       onMouseEnter={handleOnHoverStart}
       onMouseLeave={handleOnHoverEnd}
       onClick={handleClick}
