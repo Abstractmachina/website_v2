@@ -3,6 +3,22 @@ import CloseProjectButton from "./Button_CloseProject";
 import { motion } from "framer-motion";
 
 function ProjectContent() {
+
+
+	
+/**
+	 * fetch project from database with provided id string
+	 */
+const fetchProject = async () => { 
+	try {
+		const res = await fetch(`api/projects/printfast1`);
+		const data = await res.json();
+		console.log(data);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 	return (
 		<motion.div id="container_projectcontent" className="fixed h-full w-1/2 top-0 right-0 p-20 overflow-auto flex flex-col items-end">
 			<CloseProjectButton />
