@@ -8,14 +8,17 @@ export const GET = async (req: NextRequest, { params }: { params: { shortcode: s
 
     try {
         await connectDb();
-        const project = await Project.find({ shortCode: params.shortcode });
+        const project = await Project.findOne({ shortCode: params.shortcode }).exec();
+
+        console.log(project);
+        console.log(typeof project);
         
         // project not found
         if (!project) {
             return NextResponse.json({ success: false, message: 'Project does not exist!', project: null }, { status: 400 });
         }
         // success
-        return NextResponse.json({ success: true, project }, { status: 200 });
+        return NextResponse.json({ success: true, project: project }, { status: 200 });
     }
     catch (err) {
         console.error(err);
