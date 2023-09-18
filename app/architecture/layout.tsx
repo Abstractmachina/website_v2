@@ -22,14 +22,10 @@ async function getProjectIndex() {
     const res = await fetch(process.env.SERVER + "/api/projects");
     const data = await res.json();
 
-    console.log("aaaaaaaaaaa");
-    console.log(data);
-
     const index: IndexEntry[] = [];
-    for (var p of data.projects) {
-        index.push(new IndexEntry().deserialize(p));
+    for(let i = 0; i < data.projects.length; i++) {
+        index.push(new IndexEntry().deserialize(data.projects[i]));
     }
-
     return index;
 }
 

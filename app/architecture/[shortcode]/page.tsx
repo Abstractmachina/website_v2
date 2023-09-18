@@ -1,3 +1,4 @@
+import CloseProjectButton from "@/components/Button_CloseProject";
 import ISerializable from "@/types/ISerializable";
 import React from "react";
 
@@ -35,8 +36,9 @@ export async function generateStaticParams() {
 async function getProject(params: any): Promise<Project | null> {
 	const res = await fetch(process.env.SERVER + `/api/projects/${params.shortcode}`);
     const data = await res.json();
+    console.log(data);
 	if (data && data.project) {
-        const p = new Project().deserialize(data.project[0]);
+        const p = new Project().deserialize(data.project);
 
         return p;
     }
@@ -44,10 +46,14 @@ async function getProject(params: any): Promise<Project | null> {
 }
 
 async function Projectpage({ params }: { params: { shortcode: string } }) {
+
+    console.log(params);
     const project = await getProject(params);
 	return (
 		<div className="fixed h-full w-1/2 top-0 right-0 p-20 overflow-auto flex flex-col items-end">
-			<div dangerouslySetInnerHTML={{__html: project? project!.html : ''}}></div>
+			<CloseProjectButton />
+			
+            <div dangerouslySetInnerHTML={{ __html: project ? project!.html : '' }}></div>
 		</div>
 	);
 }

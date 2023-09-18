@@ -1,11 +1,16 @@
+'use client'
+
 import { useArchActions } from '@/stores/archStore'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 function CloseProjectButton() {
+  const router = useRouter();
   const { setSelectedProject } = useArchActions();
 
   const handleClick = () => {
     setSelectedProject('none');
+    router.push('/architecture');
   }
 
   return (

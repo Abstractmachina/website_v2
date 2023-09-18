@@ -1,6 +1,7 @@
 import { useArchActions, useArchSelectedProject } from "@/stores/archStore";
 import IndexEntry from "@/types/IndexEntry";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 
 
@@ -17,6 +18,7 @@ type ProjectIndexRowProps = {
 
 const ProjectIndexRow: FC<ProjectIndexRowProps> = ({entry}) : ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // styles
   const projectIsSelectedStyle = {
@@ -64,6 +66,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({entry}) : ReactElement => {
     setSelectedProject("test");
     showPreview(false);
     setCurrentState(ProjectIndexRowState.SELECTED);
+    router.push(`/architecture/${entry.shortCode}`);
   }
 
 
@@ -78,6 +81,9 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({entry}) : ReactElement => {
 
   }
 
+  const listCategories = entry.categories.map(c => <span key={entry.shortCode + c}>{c}</span>)
+  const listAffiliations = entry.affiliations.map(aff => <span key={entry.shortCode + aff}>{ aff}</span>)
+
 	return (
     <div key={ entry.title} ref={containerRef} className="flex flex-row justify-between text-white hover:cursor-pointer hover:font-bold"
       onMouseEnter={handleOnHoverStart}
@@ -85,10 +91,10 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({entry}) : ReactElement => {
       onClick={handleClick}
       style={ determineStyle() }
     >
-			<span>2000</span>
-			<span>Project Title</span>
-			<span>Type</span>
-			<span>Affiliation</span>
+      <span>{ entry.year}</span>
+      <span>{entry.title}</span>
+      <div>{ listCategories }</div>
+      <span>{ listAffiliations }</span>
 		</div>
 	);
 }

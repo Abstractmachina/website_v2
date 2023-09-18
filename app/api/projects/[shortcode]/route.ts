@@ -9,9 +9,6 @@ export const GET = async (req: NextRequest, { params }: { params: { shortcode: s
     try {
         await connectDb();
         const project = await Project.findOne({ shortCode: params.shortcode }).exec();
-
-        console.log(project);
-        console.log(typeof project);
         
         // project not found
         if (!project) {

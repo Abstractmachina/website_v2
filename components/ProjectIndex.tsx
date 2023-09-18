@@ -114,22 +114,25 @@ const ProjectIndex : FC<ProjectIndexProps> = ({entries}) : ReactElement => {
 	} 
 
 
-  return (
-      <div id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin overflow-auto no-scrollbar" onScroll={handleScroll}>
-          
-    <Trackpoint />
+    return (
+      <div ref={scope }>
+        <div  id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin overflow-auto no-scrollbar" onScroll={handleScroll}>
+            
+        <Trackpoint />
 
-        <Button_home />
-        <motion.h1 id="title_arch" className="text-white" style={{ x: -2000 }}>
-            Architecture / Design
-        </motion.h1>
+            <Button_home />
+            <motion.h1 id="title_arch" className="text-white" style={{ x: -2000 }}>
+                Architecture / Design
+            </motion.h1>
 
-          <motion.div id="projects" className="flex flex-col gap-10 mt-9 mr-28" style={{ x: -2000 }}>
-              {entries.map(entry => (
-                  <ProjectIndexRow entry={entry} key={ entry.shortCode} />
-              ))}
-        </motion.div>
-    </div>
+            <motion.div id="projects" className="flex flex-col gap-10 mt-9 mr-28" style={{ x: -2000 }}>
+                {entries.map(entry => (
+                    <ProjectIndexRow entry={entry} key={ entry.shortCode} />
+                ))}
+            </motion.div>
+        </div>
+            
+      </div>
   )
 }
 

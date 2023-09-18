@@ -7,15 +7,20 @@ import Project from "@/models/project.model";
 export const GET = async (req: NextRequest) => {
 	console.log("GET /api/projects");
 
-	try {
-		const projects = await Project.find().exec();
+    try {
+        await connectDb();
+
+        const projects = await Project.find({}).exec();
+        
+        console.log("in api")
+        console.log(projects)
 
 		// project not found
 		if (!projects) {
 			return NextResponse.json({ success: false, message: "Project does not exist!", projects: null }, { status: 400 });
 		}
 		// success
-		return NextResponse.json({ success: true, projects: projects }, { status: 200 });
+		return NextResponse.json({ success: "true", projects: projects }, { status: 200 });
 	} catch (err) {
 		console.error(err);
 		return NextResponse.json({ success: false, projects: null, message: "Internal server error" }, { status: 500 });
