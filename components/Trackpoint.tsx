@@ -62,7 +62,8 @@ const Trackpoint = () => {
 	function getFinalYPos() : number {
 		if (!isAnimateable) return computeCenterPoint().y;
 		else {
-			return previewIsVisible ? previewPostion.y! - baseFontSize * 3 - scrollY : mousePos.y ? mousePos.y : 0 - yShift;
+			console.log("trackpoint: "+ scrollY);
+			return previewIsVisible ? previewPostion.y! - baseFontSize * 3 : mousePos.y ? mousePos.y : 0 - yShift;
 		}
 		
 	}

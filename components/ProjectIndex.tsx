@@ -81,7 +81,7 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 	}
 
 	function handleScroll(e: any) {
-		const target = e.target;
+        const target = e.target;
 		setProjecIndexScrollY(target.scrollTop);
 	}
 
