@@ -30,7 +30,13 @@ class Project implements ISerializable<Project> {
 };
 
 export async function generateStaticParams() {
-	return [{ shortcode: "printfast1" }, { shortcode: "printfast2" }];
+    return [
+        { shortcode: "printfast1" },
+        { shortcode: "printfast2" },
+        { shortcode: "drones-ml" },
+        { shortcode: "matnet" },
+        { shortcode: "shells" },
+    ];
 }
 
 async function getProject(params: any): Promise<Project | null> {

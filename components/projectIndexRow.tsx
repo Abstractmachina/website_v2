@@ -15,7 +15,6 @@ type ProjectIndexRowProps = {
 };
 
 const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
-	const containerRef = useRef<HTMLDivElement>(null);
 	const trRef = useRef<HTMLTableRowElement>(null);
 	const router = useRouter();
 
@@ -41,7 +40,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 
 	// if a project is deselected, reset all rows to default styling
 	useEffect(() => {
-		if (selectedProject == "none") setCurrentState(ProjectIndexRowState.INACTIVE);
+		if (selectedProject == "none" || selectedProject != entry.shortCode) setCurrentState(ProjectIndexRowState.INACTIVE);
 	}, [selectedProject]);
 
 	// event handling
@@ -49,7 +48,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 		if (selectedProject == "none") {
 			showPreview(true);
 			setCurrentState(ProjectIndexRowState.HOVERED);
-			
+
 			// update preview position for aligning trackpoint with hovered project index
 			const clientRect = trRef.current?.getBoundingClientRect();
 			setPosition(trRef.current ? clientRect!.left : 0, trRef.current ? clientRect!.top + trRef.current.offsetHeight : 0);
@@ -62,8 +61,9 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 	};
 
 	const handleClick = () => {
-		setSelectedProject("test");
+		setSelectedProject(entry.shortCode);
 		showPreview(false);
+		//reset all other rows to default style
 		setCurrentState(ProjectIndexRowState.SELECTED);
 		router.push(`/architecture/${entry.shortCode}`);
 	};

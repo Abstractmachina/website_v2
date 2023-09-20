@@ -45,6 +45,8 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 	const exitAnimationDuration = 0.2;
 	const enterAnimationDuration = 0.2;
 
+
+    //page entry animation
 	useEffect(() => {
 		setCurrentPage(Page.ARCH);
 
@@ -85,21 +87,6 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 		setProjecIndexScrollY(target.scrollTop);
 	}
 
-	async function exitPageToHome() {
-		await Promise.all([
-			animate(
-				"#trackpoint",
-				{
-					y: isBrowser() ? window.innerWidth / 2 : 0,
-					backgroundColor: "#171717",
-				},
-				{ duration: exitAnimationDuration, ease: "linear" }
-			),
-			animate(scope.current, { width: "0%", padding: "0" }, { duration: 1, ease: "easeOut" }),
-		]);
-		setNextPage(Page.NONE);
-		router.push("/");
-	}
 
 	return (
 			<div ref={scope} id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin overflow-auto no-scrollbar pl-0" onScroll={handleScroll}>
