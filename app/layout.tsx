@@ -33,6 +33,17 @@ const monolisk = localfont({
   variable: '--font-monolisk'
 });
 
+const monument = localfont({
+  src: [
+    {
+      path: '../public/fonts/PPMonumentExtended-Black.otf',
+      weight: '900',
+      style: 'normal',
+    }
+  ],
+  variable: '--font-monument'
+})
+
 export const metadata: Metadata = {
   title: 'Taole Chen\'s Website',
   description: 'Personal Website of Taole Chen',
@@ -44,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={` ${inter.className} ${monolisk.variable}  ${openSans.className} ${roboto.className}`}>
+    <html lang="en" className={` ${inter.className} ${monolisk.variable} ${monument.variable} ${openSans.className} ${roboto.className}`}>
       <body >
         {children}
         <Footer />

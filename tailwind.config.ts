@@ -18,6 +18,7 @@ const config: Config = {
         'monolisk': ['var(--font-monolisk)'],
         'inter': ['var(--font-inter)', 'sans-serif'],
         'roboto': ['var(--font-roboto)', 'sans-serif'],
+        'monument': ['var(--font-monument)', 'sans-serif'],
       },
     },
     fontFamily: {

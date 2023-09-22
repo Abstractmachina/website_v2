@@ -23,33 +23,19 @@ export default function Home() {
 	// state
 	// GLOBAL STORE
 	const currentPage = useGlobalCurrentPage();
-	const { setCurrentPage, setCenterCoord } = useGlobalActions();
+	const { setCurrentPage, setCenterCoord, setClientSize } = useGlobalActions();
 	const [mouseAnimateable, setMouseAnimateable] = useState(false);
 	const centerCoord = useGlobalCenterCoordinate();
 
-	useEffect(() => {
-		if (!centerCoord.x || !centerCoord.y) getWindowCenterCoordinate(setCenterCoord);
-		window.addEventListener("resize", handleWindowSizeChange);
-		return () => {
-			window.removeEventListener("resize", handleWindowSizeChange);
-		};
-	}, []);
-
-	function handleWindowSizeChange() {
-		const centerX = Math.round(isBrowser() ? window.innerWidth / 2 : 0);
-		const centerY = Math.round(isBrowser() ? window.innerHeight / 2 : 0);
-		setCenterCoord(centerX, centerY);
-	}
-
+	// routing
 	const router = useRouter();
+
+	//animation
 	const [scope, animate] = useAnimate();
-
 	const exitAnimationDuration = 0.2;
-
 	const [mousePos, setMousePos] = useState<IVec2d>({ x: 0, y: 0 });
 
 	// styles
-
 	const style_centerLineEnd = {
 		rotateZ: -90,
 		width: centerCoord.x! * 4,
@@ -74,9 +60,21 @@ export default function Home() {
 			entryFromArch();
 			setCurrentPage(Page.HOME);
 		}
+
+		// initiate client size
+		setClientSize(isBrowser() ? { x: window.innerWidth, y: window.innerHeight } : { x: 0, y: 0 });
+		setCenterCoord(isBrowser() ? window.innerWidth/2 : 0, isBrowser() ? window.innerHeight/2 : 0)
+
+
 		if (isBrowser()) {
 			window.addEventListener("mousemove", handleMouse);
+			window.addEventListener('resize', handleResize);
 		}
+		return () => {
+			window.removeEventListener("mousemove", handleMouse);
+			window.removeEventListener('resize', handleResize);
+
+		  }
 	}, []);
 
 	// _______________  EVENTS  __________________________
@@ -84,6 +82,19 @@ export default function Home() {
 	const handleMouse = (e: MouseEvent): void => {
 		setMousePos({ x: e.pageX, y: e.pageY });
 	};
+
+	function handleResize() {
+		let width = 0;
+		let height = 0;
+		if (isBrowser()) {
+			width = window.innerWidth;
+			height = window.innerHeight;
+		}
+		const centerX = Math.round(width / 2);
+		const centerY = Math.round(height / 2);
+		setCenterCoord(centerX, centerY);
+		setClientSize({ x: width, y: height });
+	}
 
 	const archLinkMotion = () => {
 		// let dist = distance(mousePos, centerCoord).x!;
@@ -110,33 +121,9 @@ export default function Home() {
 		}
 	}
 
-	const testMongo = async () => {
-		console.log("fetchPostContent called");
-		try {
-			const response = await fetch(`/api/projects/`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					test: "this is a test 00",
-				})
-			})
-	
-			const data = await response.json();
-			console.log(data);
-	
-			if (response.status == 200) {
-				console.log("POST request successful");
-			}
-			else {
-				throw Error("something went wrong!");
-			}
-
-		} catch (error) {
-			console.log(error);
-		}
+	function defineDialMouseBehavior() {
+		const x = getMouseParam().x!
+		console.log(x);
 	}
 
 	return (
@@ -148,11 +135,7 @@ export default function Home() {
 					left: centerCoord.x!
 			}}></div> */}
 
-			<button className="absolute top-1/3 left-1/3
-			bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-			onClick={testMongo}>TEST MONGO</button>
-			
-			
+	
 			<HomeCenterLine />
 
 			{/* _____________	Hi Im Tao	_____________________ */}
@@ -180,7 +163,7 @@ export default function Home() {
 
 			{/* __________	Banners	____________________________________ */}
 			{/* Banner architecture */}
-			<motion.div id="banner_arch" className="font-monolisk text-9xl fixed"
+			<motion.div id="banner_arch" className="font-monument text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x!,
@@ -196,11 +179,11 @@ export default function Home() {
 					duration: 0.001
 				}}
 			>
-				Architecture
+				ARCHITECTURE
 			</motion.div>
 
 			{/* banner programming */}
-			<motion.div id="banner_arch" className="font-monolisk text-9xl fixed"
+			<motion.div id="banner_programming" className="font-monument text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x! - 500,
@@ -216,7 +199,7 @@ export default function Home() {
 					duration: 0.001
 				}}
 			>
-				Programming
+				PROGRAMMING
 			</motion.div>
 
 			{/* ________	link element to architecture projects page	________ */}

@@ -1,7 +1,5 @@
-import Button_home from "@/components/Button_home";
 import ProjectIndex from "@/components/ProjectIndex";
 import IndexEntry from "@/types/IndexEntry";
-import Link from "next/link";
 
 async function getProjectIndex() {
 	const res = await fetch(process.env.SERVER + "/api/projects");

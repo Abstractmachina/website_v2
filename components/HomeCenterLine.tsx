@@ -1,7 +1,7 @@
 "use client";
 
 import { getRootFontSize, isBrowser, map } from "@/libs/util";
-import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage } from "@/stores/globalStore";
+import { useGlobalActions, useGlobalCenterCoordinate, useGlobalClientSize, useGlobalCurrentPage } from "@/stores/globalStore";
 import { Page } from "@/types/enum_page";
 import {  motion, useAnimate } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -22,20 +22,53 @@ function HomeCenterLine() {
 	// state
 	const centerCoord = useGlobalCenterCoordinate();
 
+	//globalstore
+	const clientSize : IVec2d = useGlobalClientSize();
+
 	const mousePos = useMousePosition();
 	const [scope, animate] = useAnimate();
 	const [animationState, setAnimationState] = useState(AnimationState.START);
-
 	// settings
-	const lineWidthThreshold = 150;
-	const rotationThreshold = 200;
+	const lineWidthThreshold = 100;
+	const [rotationStart, setRotationStart] = useState<number>(isBrowser() ? window.innerWidth / 2 / 3 : 0);
+	const [rotationEnd, setRotationEnd] = useState<number>(isBrowser() ? window.innerWidth / 2 : 0);
+
+	// const rotationStart = (clientSize.x! / 2) / 3;
+	// const rotationEnd = (clientSize.x! / 2);
+
+
+	useEffect(() => {
+		console.log("clientsize " + clientSize.x);
+		if (!clientSize.x || clientSize.x == 0) {
+			setRotationStart(isBrowser() ? window.innerWidth / 2 / 3 : 0);
+			setRotationEnd(isBrowser() ? window.innerWidth / 2 : 0);
+
+		}
+		// setRotationStart((clientSize.x! / 2) / 3);
+		// setRotationEnd((clientSize.x! / 2));
+	}, [])
+
+	useEffect(() => {
+		console.log("rotationStart: " + rotationStart);
+		console.log("rotationEnd: " + rotationEnd);
+	}, [rotationStart, rotationEnd])
+
+	useEffect(() => {
+		// setRotationStart((clientSize.x! / 2) / 3);
+		// setRotationEnd((clientSize.x! / 2));
+	}, [clientSize])
+	
 
 	const translateRotation = (): number => {
 		const dist = distance(centerCoord, mousePos).x!;
 		const u_dist = Math.abs(dist);
-		if (u_dist < rotationThreshold) return 0;
+		if (u_dist < rotationStart ) return 0;
 
-		const val = map(u_dist, rotationThreshold, centerCoord.x!, 0, 100);
+		console.log(rotationStart);
+		console.log(rotationEnd);
+		if (rotationEnd == 0) return 0;
+		const val = map(u_dist, rotationStart, rotationEnd, 0, 90);
+		console.log("rotate: " + val);
 		const sign = dist / u_dist;
 		// angle caps at 90
 		return val > 90 || val < -90 ? 90 * sign : val * sign;
@@ -44,7 +77,7 @@ function HomeCenterLine() {
 	const translateWidth = (): number => {
 		const u_dist = distance(mousePos, centerCoord, false).x!;
 		if (u_dist < lineWidthThreshold) return 0;
-		return map(u_dist, lineWidthThreshold, rotationThreshold, 0, window.innerWidth + 100);
+		return map(u_dist, lineWidthThreshold, rotationStart, 0, window.innerWidth + 100);
 	};
 
 	const variants = {
