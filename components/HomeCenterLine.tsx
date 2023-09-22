@@ -30,32 +30,19 @@ function HomeCenterLine() {
 	const [animationState, setAnimationState] = useState(AnimationState.START);
 	// settings
 	const lineWidthThreshold = 100;
-	const [rotationStart, setRotationStart] = useState<number>(isBrowser() ? window.innerWidth / 2 / 3 : 0);
-	const [rotationEnd, setRotationEnd] = useState<number>(isBrowser() ? window.innerWidth / 2 : 0);
-
-	// const rotationStart = (clientSize.x! / 2) / 3;
-	// const rotationEnd = (clientSize.x! / 2);
+	const [rotationStart, setRotationStart] = useState<number>(0);
+	const [rotationEnd, setRotationEnd] = useState<number>(0);
 
 
 	useEffect(() => {
-		console.log("clientsize " + clientSize.x);
-		if (!clientSize.x || clientSize.x == 0) {
-			setRotationStart(isBrowser() ? window.innerWidth / 2 / 3 : 0);
-			setRotationEnd(isBrowser() ? window.innerWidth / 2 : 0);
-
-		}
-		// setRotationStart((clientSize.x! / 2) / 3);
-		// setRotationEnd((clientSize.x! / 2));
+		// init rotation thresholds
+		setRotationStart((clientSize.x! / 2) / 3);
+		setRotationEnd((clientSize.x! / 2));
 	}, [])
 
 	useEffect(() => {
-		console.log("rotationStart: " + rotationStart);
-		console.log("rotationEnd: " + rotationEnd);
-	}, [rotationStart, rotationEnd])
-
-	useEffect(() => {
-		// setRotationStart((clientSize.x! / 2) / 3);
-		// setRotationEnd((clientSize.x! / 2));
+		setRotationStart((clientSize.x! / 2) / 3);
+		setRotationEnd((clientSize.x! / 2));
 	}, [clientSize])
 	
 
@@ -64,11 +51,7 @@ function HomeCenterLine() {
 		const u_dist = Math.abs(dist);
 		if (u_dist < rotationStart ) return 0;
 
-		console.log(rotationStart);
-		console.log(rotationEnd);
-		if (rotationEnd == 0) return 0;
 		const val = map(u_dist, rotationStart, rotationEnd, 0, 90);
-		console.log("rotate: " + val);
 		const sign = dist / u_dist;
 		// angle caps at 90
 		return val > 90 || val < -90 ? 90 * sign : val * sign;

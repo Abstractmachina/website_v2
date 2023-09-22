@@ -35,6 +35,10 @@ export default function Home() {
 	const exitAnimationDuration = 0.2;
 	const [mousePos, setMousePos] = useState<IVec2d>({ x: 0, y: 0 });
 
+	const textboxStart = 0.3;
+	const bannerStart = 0.5;
+
+
 	// styles
 	const style_centerLineEnd = {
 		rotateZ: -90,
@@ -45,7 +49,7 @@ export default function Home() {
 		width: 2,
 	};
 
-	// attach event listener to window when component is mounted
+	// on component mount
 	useEffect(() => {
 		// set up when coming from arch projects
 		if (currentPage == Page.ARCH) {
@@ -61,7 +65,7 @@ export default function Home() {
 			setCurrentPage(Page.HOME);
 		}
 
-		// initiate client size
+		// initiate client size and center coord
 		setClientSize(isBrowser() ? { x: window.innerWidth, y: window.innerHeight } : { x: 0, y: 0 });
 		setCenterCoord(isBrowser() ? window.innerWidth/2 : 0, isBrowser() ? window.innerHeight/2 : 0)
 
@@ -121,15 +125,30 @@ export default function Home() {
 		}
 	}
 
-	function defineDialMouseBehavior() {
+
+
+ /**
+  * modulate mouse param (0:1 => start:end)
+  * @param {any} start number
+  * @param {any} end number
+  * @returns {any} number
+  */
+	function modMouseParam(start:number, end:number) : number{
 		const x = getMouseParam().x!
-		console.log(x);
+		const x_u = Math.abs(x); // unsigned val
+		if (x_u < start) return 0;
+		const val = map(x_u, start, end, 0, 1);
+		if (x >= 0) return val;
+		else return val * -1;
 	}
 
 	return (
 		<main className="fixed min-h-full min-w-full top-0 left-0" ref={scope}>
 			
-			{/* <div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
+			{/* 
+			// center point alignment
+			
+			<div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
 				style={{
 					top: centerCoord.y!,
 					left: centerCoord.x!
@@ -146,7 +165,7 @@ export default function Home() {
 				anchor={centerCoord}
 				offset={{ y: -200, x: -100 }}
 				range={{ min: 0, max: -200 }}
-				current={getMouseParam().x!}
+				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.LEFT}
 			/>
 			{/* _______________	tag line 	________________________*/}
@@ -157,7 +176,7 @@ export default function Home() {
 				anchor={centerCoord}
 				offset={{ y: 150, x: -200 }}
 				range={{ min: 0, max: -200 }}
-				current={getMouseParam().x!}
+				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.RIGHT}
 			/>
 
@@ -171,12 +190,12 @@ export default function Home() {
 					color: globalConfigs.color_accent
 				}}
 				animate={{
-					x: map(getMouseParam().x!, 0, -1, 0, -800),
-					opacity: map(getMouseParam().x!, 0, -1, 0, 1),
+					x: map(modMouseParam(bannerStart, 1), 0, -1, 0, -800),
+					opacity: map(modMouseParam(bannerStart, 1), 0, -1, 0, 1),
 				}}
 				transition={{
 					type: "linear",
-					duration: 0.001
+					duration: 0.01
 				}}
 			>
 				ARCHITECTURE
@@ -191,8 +210,8 @@ export default function Home() {
 					color: globalConfigs.color_accent
 				}}
 				animate={{
-					x: map(getMouseParam().x!, 0, 1, 0, 800),
-					opacity: map(getMouseParam().x!, 0, 1, 0, 1),
+					x: map(modMouseParam(bannerStart, 1), 0, 1, 0, 800),
+					opacity: map(modMouseParam(bannerStart, 1), 0, 1, 0, 1),
 				}}
 				transition={{
 					type: "linear",
