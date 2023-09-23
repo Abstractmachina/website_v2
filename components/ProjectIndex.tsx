@@ -52,7 +52,7 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 		setCurrentPage(Page.ARCH);
 
 		const initAnim = async () => {
-			await Promise.all([animate(scope.current, { width: "50%", padding: "4rem" }, { duration: enterAnimationDuration, ease: "easeOut" }), animate("#projectTableContainer", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 }), animate("#title_arch", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 }), animate("#trackpoint", { backgroundColor: "#ffffff" }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 })]);
+			await Promise.all([animate(scope.current, { width: "50%", padding: "4rem" }, { duration: enterAnimationDuration, ease: "easeOut" }), animate("#projectTableContainer", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 }), animate("#title_arch", { x: 0 }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 })]);
 
 			setTrackpointAnimateable(true);
 		};
@@ -91,9 +91,9 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 
 	return (
 			<div ref={scope} id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin overflow-auto no-scrollbar pl-0" onScroll={handleScroll}>
-				<Trackpoint indexEntries={ entries }/>
+				{/* <Trackpoint indexEntries={ entries }/> */}
 
-				<Button_home />
+				{/* <Button_home /> */}
 				<motion.h1 id="title_arch" className="text-white font-thin" style={{ x: -2000 }}>
 					Architecture / Design
 				</motion.h1>

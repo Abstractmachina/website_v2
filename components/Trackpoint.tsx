@@ -1,6 +1,6 @@
 "use client";
 
-import { useArchHoveredProject, useArchIndexScrollY, useArchPreviewPosition, useArchPreviewVisibility, useArchSelectedProject, useArchTrackpointAnimateable } from "@/stores/archStore";
+import { useArchActions, useArchHoveredProject, useArchIndexScrollY, useArchPreviewPosition, useArchPreviewVisibility, useArchSelectedProject, useArchTrackpointAnimateable } from "@/stores/archStore";
 import { getRootFontSize, isBrowser } from "@/libs/util";
 import { motion } from "framer-motion";
 import React, { FC, ReactElement, useState, useEffect } from "react";
@@ -9,6 +9,8 @@ import { useGlobalCenterCoordinate } from "@/stores/globalStore";
 import globalConfigs from "@/GLOBAL.config";
 import Image from "next/image";
 import IndexEntry from "@/types/IndexEntry";
+import { useRouter } from "next/navigation";
+import CloseProjectButton from "./Button_CloseProject";
 
 
 type TrackPointProps = {
@@ -22,21 +24,29 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 	const previewIsVisible = useArchPreviewVisibility();
 	const previewPostion = useArchPreviewPosition();
 	const isAnimateable = useArchTrackpointAnimateable();
-	const scrollY = useArchIndexScrollY();
 	const selectedProject = useArchSelectedProject();
 	const hoveredProject = useArchHoveredProject();
+	
+	const { setSelectedProject } = useArchActions();
 	// global store
 	const centerCoord = useGlobalCenterCoordinate();
+
+	//local states
+	const [baseFontSize, setBaseFontSize] = useState<number>(16);
+	const [yShift, setYShift] = useState<number>(0);
+	const [previewUrl, setPreviewUrl] = useState<string>('');
+	const [mouseOverPoint, setMouseOverPoint] = useState<boolean>(false); // toggle if mouse hovers over trackpoint itself
+
+	const mousePos = useMousePosition();
+
+
+	//routing
+	const router = useRouter();
 
 	// sizes in rem
 	const expandedSize: number = 6;
 	const collapsedSize: number = parseInt(globalConfigs.trackpoint_defaultSize, 10);
 
-	const [baseFontSize, setBaseFontSize] = useState<number>(16);
-	const [yShift, setYShift] = useState<number>(0);
-	const [previewUrl, setPreviewUrl] = useState<string>('');
-
-	const mousePos = useMousePosition();
 
 	useEffect(() => {
 		let rootFontSize = "unset";
@@ -44,13 +54,15 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 		if (rootFontSize == "unset") rootFontSize = "16px";
 		setBaseFontSize(parseInt(rootFontSize, 10));
 
-		console.log(indexEntries)
+		// animate("#trackpoint", { backgroundColor: "#ffffff" }, { duration: enterAnimationDuration, ease: "easeOut", delay: 0.2 })
+
 	}, []);
+
 
 	useEffect(() => {
 		setYShift(calcYShift());
 
-		console.log(hoveredProject);
+		// set preview image
 		const url = indexEntries.find(entry => entry.shortCode == hoveredProject)?.preview;
 		setPreviewUrl(url ? url : '');
 
@@ -68,10 +80,10 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 		return centerX + yShift - left;
 	};
 
- /**
-  * Get the final Y offset of the track point considering computed diameter of it. if not animatable, returns center point of window.
-  * @returns {number} computed y offset in pixels
-  */
+	/**
+	 * Get the final Y offset of the track point considering computed diameter of it. if not animatable, returns center point of window.
+	 * @returns {number} computed y offset in pixels
+	 */
 	function getFinalYPos() : number {
 		if (!isAnimateable) return computeCenterPoint().y;
 		else {
@@ -100,25 +112,65 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 		else return globalConfigs.color_dark;
 	}
 
+
+	// event handlers
+	function handleClick() {
+		setSelectedProject('none');
+    	router.push('/architecture');
+	}
+
+	function handleMouseEnter() {
+		if (selectedProject != 'none')
+			setMouseOverPoint(true);
+	 }
+	
+	function handleMouseLeave() {
+		setMouseOverPoint(false);
+	}
+
+
+	const variants = {
+		default: {
+			backgroundColor: computeBackgroundColor(),
+			top: getFinalYPos() -10,
+			height: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
+			width: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
+		},
+		hover: {
+			backgroundColor: globalConfigs.color_accent,
+			top: mousePos.y! - baseFontSize * 15/2,
+			height: `15rem`,
+			width: `15rem`,
+			transition: {
+				type: "tween",
+				duration: 1
+			}
+		}
+	}
+
 	return (
 		<motion.div
 			id="trackpoint"
-			className="fixed rounded-full inset-x-0 inset-y-0 mx-auto z-10 flex items-center overflow-visible justify-end"
+			className="fixed rounded-full inset-x-0 mx-auto z-20 flex items-center overflow-visible justify-end hover:cursor-pointer"
 			style={{
-				
 				width: globalConfigs.trackpoint_defaultSize,
 				height: globalConfigs.trackpoint_defaultSize,
 				top: computeCenterPoint().y!,
-				// left: computeCenterPoint().x!
 			}}
-			animate={{
-				backgroundColor: computeBackgroundColor(),
-				top: getFinalYPos(),
-				height: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
-				width: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
+			initial={{
+				backgroundColor: globalConfigs.color_dark
+
 			}}
-			transition={{ type: "tween", duration: 0.1 }}
+			animate={mouseOverPoint ? "hover" : "default"}
+			transition={{ type: "tween", duration: 0.2 }}
+			variants={variants}
+			onClick={handleClick}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 		>
+
+
+
 			{/* underline */}
 			{isAnimateable && (
 				<motion.div
@@ -128,7 +180,7 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 						opacity: 0,
 					}}
 					animate={{
-						opacity: selectedProject == 'none' ? 1 : 0,
+						opacity: (selectedProject == 'none' && !mouseOverPoint) ? 1 : 0,
 						width: previewIsVisible ? calcUnderlineWidth() : 10,
 						paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 					}}
@@ -136,10 +188,11 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 				></motion.div>
 			)}
 
-			{previewIsVisible && (
+			{/* preview image */}
+			{(previewIsVisible && previewUrl) && (
 				<Image src={previewUrl} alt='preview image' width={150} height={150} className=" rounded-full z-10 " />
 			)}
-			{/* preview image */}
+
 			{isAnimateable && (
 				<motion.div
 					className=" h-[1px] bg-white absolute mt-1 opacity-0"

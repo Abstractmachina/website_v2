@@ -65,6 +65,7 @@ export default function Home() {
 
 			entryFromArch();
 			setCurrentPage(Page.HOME);
+			router.prefetch("/architecture");
 		}
 
 		// initiate client size and center coord
@@ -116,7 +117,7 @@ export default function Home() {
 		};
 	};
 
-	const exitPageToArchprojects = async () => {
+	const exitToArchprojects = async () => {
 		setMouseAnimateable(false);
 		await Promise.all([
 			animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
@@ -124,6 +125,15 @@ export default function Home() {
 			animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
 		router.push("/architecture");
 	};
+
+	async function exitToProgrammingProject() {
+		setMouseAnimateable(false);
+		await Promise.all([
+			animate("#centerline", { rotateZ: 90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#tagline", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#banner_arch", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
+		router.push("/programming");
+	}
 
 	
 	function getMouseParam() : IVec2d {
@@ -174,7 +184,7 @@ export default function Home() {
 				text="Hi, I'm Tao"
 				fontsize={3}
 				anchor={centerCoord}
-				offset={{ y: -200, x: -100 }}
+				offset={{ y: -150, x: -100 }}
 				range={{ min: 0, max: -200 }}
 				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.LEFT}
@@ -183,9 +193,9 @@ export default function Home() {
 			<ShiftTranslateTextBox
 				id="tagline"
 				text="a computational architect and fullstack developer"
-				fontsize={1.2}
+				fontsize={1}
 				anchor={centerCoord}
-				offset={{ y: 150, x: -200 }}
+				offset={{ y: 100, x: -150 }}
 				range={{ min: 0, max: -200 }}
 				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.RIGHT}
@@ -216,7 +226,7 @@ export default function Home() {
 			<motion.div id="banner_programming" className="font-monument text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
-					left: centerCoord.x! - 500,
+					left: centerCoord.x! - 700,
 					opacity: 0,
 					color: globalConfigs.color_accent
 				}}
@@ -245,7 +255,23 @@ export default function Home() {
 					type: "tween",
 					duration: 0.01
 				}}
-				onClick={exitPageToArchprojects} >
+				onClick={exitToArchprojects} >
+			</motion.div>
+
+			{/* ________	link element to programming projects page	________ */}
+			<motion.div id="link_program" className="fixed bottom-0 right-0 h-1/2 z-10 hover:cursor-pointer"
+				style={{
+					backgroundColor: globalConfigs.color_accent,
+					width: 0
+				}}
+				animate={{
+					width: map(modMouseParam(linkStart, 1), 0, 1, 0, 100)
+				}}
+				transition={{
+					type: "tween",
+					duration: 0.01
+				}}
+				onClick={exitToProgrammingProject} >
 			</motion.div>
 		</main>
 	);

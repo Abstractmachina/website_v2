@@ -1,4 +1,5 @@
 import ProjectIndex from "@/components/ProjectIndex";
+import Trackpoint from "@/components/Trackpoint";
 import IndexEntry from "@/types/IndexEntry";
 
 async function getProjectIndex() {
@@ -22,7 +23,7 @@ export default async function ArchLayout({ children }: { children: React.ReactNo
 		<main className="fixed flex min-h-full min-w-full top-0 left-0">
 			{/* project index */}
 			<ProjectIndex entries={index} />
-
+            <Trackpoint indexEntries={ index }/>
 			{/* project content */}
 			{children}
 		</main>
