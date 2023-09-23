@@ -7,6 +7,7 @@ export default class IndexEntry implements ISerializable<IndexEntry> {
     year: number;
     categories: string[];
     affiliations: string[];
+    preview: string;
     
     deserialize(input: any): IndexEntry {
         this.shortCode = input.shortCode;
@@ -14,6 +15,7 @@ export default class IndexEntry implements ISerializable<IndexEntry> {
         this.year = input.year;
         this.categories = input.categories;
         this.affiliations = input.affiliations;
+        this.preview = input.preview;
 
         return this;
     }

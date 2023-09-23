@@ -33,8 +33,9 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 	};
 
 	// state management
+	//arch store
 	const selectedProject = useArchSelectedProject();
-	const { showPreview, setPosition, setSelectedProject } = useArchActions();
+	const { showPreview, setPosition, setSelectedProject, setHoveredProject } = useArchActions();
 
 	const [currentState, setCurrentState] = useState(ProjectIndexRowState.INACTIVE);
 
@@ -45,6 +46,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 
 	// event handling
 	const handleOnHoverStart = (e: React.MouseEvent) => {
+		setHoveredProject(entry.shortCode);
 		if (selectedProject == "none") {
 			showPreview(true);
 			setCurrentState(ProjectIndexRowState.HOVERED);
@@ -56,6 +58,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 	};
 
 	const handleOnHoverEnd = (e: React.MouseEvent) => {
+		setHoveredProject('none');
 		showPreview(false);
 		if (selectedProject == "none") setCurrentState(ProjectIndexRowState.INACTIVE);
 	};

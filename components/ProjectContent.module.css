@@ -1,0 +1,56 @@
+
+
+.projectContent h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+}
+
+.projectContent h2 {
+    font-size: 1rem;
+    font-style: italic;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+}
+
+.projectContent h3 {
+    font-size: 1.17rem;
+    font-weight: 700;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+
+.projectContent h5 {
+    display: block;
+    font-size: 0.83em;
+    margin-block-start: 1.67em;
+    margin-block-end: 1.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.projectContent p {
+    font-family: "Source Serif 4",serif;
+    font-size: 0.9rem;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+
+.projectContent figure {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-bottom: 0.2em;
+}
+
+.projectContent figcaption {
+    font-family: "Source Serif 4",serif;
+    font-size: .9em;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 0.3em;
+    margin-left: 2em;
+    margin-top: 0.1em;
+}

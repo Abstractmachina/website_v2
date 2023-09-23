@@ -4,14 +4,13 @@ import { motion, useAnimate } from "framer-motion";
 import React, { FC, ReactElement, useEffect } from "react";
 import Button_home from "./Button_home";
 import ProjectIndexRow from "./ProjectIndexRow";
-import { useArchActions, useArchSelectedProject } from "@/stores/archStore";
+import { useArchActions, useArchProjectIndex, useArchSelectedProject } from "@/stores/archStore";
 import Trackpoint from "./Trackpoint";
 import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage, useGlobalNextPage } from "@/stores/globalStore";
 import IndexEntry from "@/types/IndexEntry";
 import { getWindowCenterCoordinate } from "@/libs/geometry";
 import { Page } from "@/types/enum_page";
 import { useRouter } from "next/navigation";
-import { isBrowser } from "@/libs/util";
 
 type ProjectIndexProps = {
 	entries: IndexEntry[];
@@ -25,10 +24,12 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 	const centerCoord = useGlobalCenterCoordinate();
 	const { setCurrentPage, setNextPage, setCenterCoord } = useGlobalActions();
 	// arch store
-	const selectedProject = useArchSelectedProject();
-	const { setTrackpointAnimateable, setProjecIndexScrollY } = useArchActions();
+    const selectedProject = useArchSelectedProject();
+    const projectIndex = useArchProjectIndex();
+	const { setTrackpointAnimateable, setProjectIndexScrollY: setProjecIndexScrollY, setProjectIndex } = useArchActions();
 
-	useEffect(() => {
+    useEffect(() => {
+        setProjectIndex(entries);
 		if (!centerCoord.x || !centerCoord.y) getWindowCenterCoordinate(setCenterCoord);
 
 		window.addEventListener("resize", handleWindowSizeChange);
@@ -90,7 +91,7 @@ const ProjectIndex: FC<ProjectIndexProps> = ({ entries }): ReactElement => {
 
 	return (
 			<div ref={scope} id="container_projectindex" className="fixed h-full w-[1px] bg-neutral-900 top-0 right-1/2 font-roboto font-thin overflow-auto no-scrollbar pl-0" onScroll={handleScroll}>
-				<Trackpoint />
+				<Trackpoint indexEntries={ entries }/>
 
 				<Button_home />
 				<motion.h1 id="title_arch" className="text-white font-thin" style={{ x: -2000 }}>

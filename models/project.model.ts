@@ -9,7 +9,8 @@ interface IProject {
     location: string,
     year: number,
     affiliations: [string],
-    shortCode: string
+    shortCode: string,
+    preview: string
 }
 
 interface IProjectMethods { }
@@ -24,7 +25,8 @@ const projectSchema = new Schema<IProject, ProjectModel, IProjectMethods>({
     location: { type: String },
     year: { type: Number, required: true },
     affiliations: { type: [String] },
-    shortCode: {type: String, required: true}
+    shortCode: { type: String, required: true },
+    preview: { type: String},
 })
 
 

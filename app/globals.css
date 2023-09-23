@@ -46,6 +46,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
+    font-family: var(--font-roboto);
 }
 
 
@@ -55,6 +56,12 @@ h1 {
 	font-size: 3rem;
 }
 
+a {
+    color: #000;
+    text-decoration: underline;
+    text-decoration-color: #A91414;
+    text-decoration-thickness: 0.2em;
+}
 
 .categoryBanner {
   position:fixed;

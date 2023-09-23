@@ -1,25 +1,30 @@
 "use client";
 
-import { useArchIndexScrollY, useArchPreviewPosition, useArchPreviewVisibility, useArchTrackpointAnimateable } from "@/stores/archStore";
+import { useArchHoveredProject, useArchIndexScrollY, useArchPreviewPosition, useArchPreviewVisibility, useArchSelectedProject, useArchTrackpointAnimateable } from "@/stores/archStore";
 import { getRootFontSize, isBrowser } from "@/libs/util";
-import { IVec2d } from "@/types/IVec2d";
 import { motion } from "framer-motion";
 import React, { FC, ReactElement, useState, useEffect } from "react";
 import useMousePosition from "@/hooks/useMousePosition";
 import { useGlobalCenterCoordinate } from "@/stores/globalStore";
 import globalConfigs from "@/GLOBAL.config";
+import Image from "next/image";
+import IndexEntry from "@/types/IndexEntry";
 
-// type TrackpointProps = {
-// 	pos: IPosition;
-// };
 
-const Trackpoint = () => {
+type TrackPointProps = {
+	indexEntries: IndexEntry[],
+}
+
+
+const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 	// state
 	// arch store
 	const previewIsVisible = useArchPreviewVisibility();
 	const previewPostion = useArchPreviewPosition();
 	const isAnimateable = useArchTrackpointAnimateable();
 	const scrollY = useArchIndexScrollY();
+	const selectedProject = useArchSelectedProject();
+	const hoveredProject = useArchHoveredProject();
 	// global store
 	const centerCoord = useGlobalCenterCoordinate();
 
@@ -28,7 +33,8 @@ const Trackpoint = () => {
 	const collapsedSize: number = parseInt(globalConfigs.trackpoint_defaultSize, 10);
 
 	const [baseFontSize, setBaseFontSize] = useState<number>(16);
-	const [yShift, setYShift] = useState(0);
+	const [yShift, setYShift] = useState<number>(0);
+	const [previewUrl, setPreviewUrl] = useState<string>('');
 
 	const mousePos = useMousePosition();
 
@@ -37,10 +43,17 @@ const Trackpoint = () => {
 		if (isBrowser()) rootFontSize = window.getComputedStyle(document.body).getPropertyValue("font-size");
 		if (rootFontSize == "unset") rootFontSize = "16px";
 		setBaseFontSize(parseInt(rootFontSize, 10));
+
+		console.log(indexEntries)
 	}, []);
 
 	useEffect(() => {
 		setYShift(calcYShift());
+
+		console.log(hoveredProject);
+		const url = indexEntries.find(entry => entry.shortCode == hoveredProject)?.preview;
+		setPreviewUrl(url ? url : '');
+
 	}, [previewIsVisible]);
 
 	const calcYShift = (): number => {
@@ -62,7 +75,6 @@ const Trackpoint = () => {
 	function getFinalYPos() : number {
 		if (!isAnimateable) return computeCenterPoint().y;
 		else {
-			console.log("trackpoint: "+ scrollY);
 			return previewIsVisible ? previewPostion.y! - baseFontSize * 3 : mousePos.y ? mousePos.y : 0 - yShift;
 		}
 		
@@ -83,20 +95,25 @@ const Trackpoint = () => {
 		}
 	}
 
+	function computeBackgroundColor() {
+		if (selectedProject == 'none') return globalConfigs.color_light;
+		else return globalConfigs.color_dark;
+	}
+
 	return (
 		<motion.div
 			id="trackpoint"
 			className="fixed rounded-full inset-x-0 inset-y-0 mx-auto z-10 flex items-center overflow-visible justify-end"
 			style={{
-				backgroundColor: "#171717",
+				
 				width: globalConfigs.trackpoint_defaultSize,
 				height: globalConfigs.trackpoint_defaultSize,
 				top: computeCenterPoint().y!,
 				// left: computeCenterPoint().x!
 			}}
 			animate={{
+				backgroundColor: computeBackgroundColor(),
 				top: getFinalYPos(),
-				// top: computeCenterPoint().y!,
 				height: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
 				width: isAnimateable ? (previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`) : `${collapsedSize}rem`,
 			}}
@@ -108,17 +125,34 @@ const Trackpoint = () => {
 					className=" h-[1px] bg-white absolute mt-1 opacity-0"
 					style={{
 						width: 10,
-					}}
-					initial={{
 						opacity: 0,
 					}}
 					animate={{
-						opacity: 1,
-
+						opacity: selectedProject == 'none' ? 1 : 0,
 						width: previewIsVisible ? calcUnderlineWidth() : 10,
 						paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 					}}
-					transition={{ type: "tween", duration: 0.3 }}
+					transition={{ type: "tween", duration: 0.2 }}
+				></motion.div>
+			)}
+
+			{previewIsVisible && (
+				<Image src={previewUrl} alt='preview image' width={150} height={150} className=" rounded-full z-10 " />
+			)}
+			{/* preview image */}
+			{isAnimateable && (
+				<motion.div
+					className=" h-[1px] bg-white absolute mt-1 opacity-0"
+					style={{
+						width: 10,
+						opacity: 0,
+					}}
+					animate={{
+						opacity: selectedProject == 'none' ? 1 : 0,
+						width: previewIsVisible ? calcUnderlineWidth() : 10,
+						paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
+					}}
+					transition={{ type: "tween", duration: 0.2 }}
 				></motion.div>
 			)}
 		</motion.div>

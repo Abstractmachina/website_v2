@@ -21,24 +21,26 @@ type HomeCenterDialProps = {
 
 const HomeCenterDial : FC<HomeCenterDialProps> = ({rotateParam, widthParam }) : ReactElement => {
 	// state
-	const centerCoord = useGlobalCenterCoordinate();
-
 	//globalstore
+	const centerCoord = useGlobalCenterCoordinate();
 	const clientSize : IVec2d = useGlobalClientSize();
 
+	// animation
 	const [scope, animate] = useAnimate();
 	const [animationState, setAnimationState] = useState(AnimationState.START);
-	// settings
 
+
+
+
+	// motion modifiers
 	const translateRotation = (): number => {
-		
 		return map(rotateParam, -1, 1, -90, 90);
 	};
 
 	const translateWidth = (): number => {
 		return map(Math.abs(widthParam), 0, 1, 0, clientSize.x! + clientSize.x! * 0.1);
 	};
-
+ 
 	const variants = {
 		start: { rotateZ: 0, width: 0 },
 		end: { rotateZ: -90, width: isBrowser() ? window.innerWidth * 3 : 2000 },

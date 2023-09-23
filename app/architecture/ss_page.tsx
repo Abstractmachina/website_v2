@@ -23,7 +23,7 @@ function Architecture() {
 	const { setCurrentPage, setNextPage, setCenterCoord } = useGlobalActions();
 	// arch store
 	const selectedProject = useArchSelectedProject();
-	const { setTrackpointAnimateable, setProjecIndexScrollY } = useArchActions();
+	const { setTrackpointAnimateable, setProjectIndexScrollY: setProjecIndexScrollY } = useArchActions();
 
 	useEffect(() => {
 		if (!centerCoord.x || !centerCoord.y) getWindowCenterCoordinate(setCenterCoord);

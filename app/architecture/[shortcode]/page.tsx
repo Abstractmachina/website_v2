@@ -1,33 +1,7 @@
 import CloseProjectButton from "@/components/Button_CloseProject";
-import ISerializable from "@/types/ISerializable";
+import ProjectContent from "@/components/ProjectContent";
 import React from "react";
-
-class Project implements ISerializable<Project> {
-    
-	title: string;
-	subtitle: string;
-	categories: [string];
-	html: string;
-	location: string;
-	year: number;
-	affiliations: [string];
-    shortCode: string;
-    
-    deserialize(input: any) : Project{
-        this.title = input.title;
-        this.subtitle = input.subtitle;
-        this.categories = input.categories;
-        this.html = input.html;
-        this.location = input.location;
-        this.year = input.year;
-        this.affiliations = input.affiliations;
-        this.shortCode = input.shortCode;
-
-        return this;
-    }
-
-
-};
+import { Project } from "@/types/Project";
 
 export async function generateStaticParams() {
     return [
@@ -42,7 +16,6 @@ export async function generateStaticParams() {
 async function getProject(params: any): Promise<Project | null> {
 	const res = await fetch(process.env.SERVER + `/api/projects/${params.shortcode}`);
     const data = await res.json();
-    console.log(data);
 	if (data && data.project) {
         const p = new Project().deserialize(data.project);
 
@@ -53,14 +26,9 @@ async function getProject(params: any): Promise<Project | null> {
 
 async function Projectpage({ params }: { params: { shortcode: string } }) {
 
-    console.log(params);
     const project = await getProject(params);
-	return (
-		<div className="fixed h-full w-1/2 top-0 right-0 p-20 overflow-auto flex flex-col items-end">
-			<CloseProjectButton />
-			
-            <div dangerouslySetInnerHTML={{ __html: project ? project!.html : '' }}></div>
-		</div>
+    return (
+        <ProjectContent dangerouslyInnerHtml={ project ? project!.html : '' } />
 	);
 }
 

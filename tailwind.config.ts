@@ -19,6 +19,7 @@ const config: Config = {
         'inter': ['var(--font-inter)', 'sans-serif'],
         'roboto': ['var(--font-roboto)', 'sans-serif'],
         'monument': ['var(--font-monument)', 'sans-serif'],
+        'sourceserif': ['var(--font-source-serif)', 'serif']
       },
     },
     fontFamily: {

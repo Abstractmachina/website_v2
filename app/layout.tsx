@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter, Open_Sans, Roboto } from 'next/font/google'
+import { Inter, Open_Sans, Roboto, Source_Serif_4 } from 'next/font/google'
 import localfont from 'next/font/local';
 import {AnimatePresence} from 'framer-motion';
 import Footer from '@/components/Footer';
@@ -21,6 +21,12 @@ const roboto = Roboto({
   style: ['italic', 'normal'],
   variable: '--font-roboto',
 })
+
+const sourceSerif4 = Source_Serif_4({
+  subsets: ['latin'],
+  display: 'optional',
+  variable: '--font-source-serif',
+});
 
 const monolisk = localfont({
   src: [
@@ -55,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={` ${inter.className} ${monolisk.variable} ${monument.variable} ${openSans.className} ${roboto.className}`}>
+    <html lang="en" className={`${monument.variable} ${openSans.className} ${sourceSerif4.variable} ${roboto.className}`}>
       <body >
         {children}
         <Footer />
