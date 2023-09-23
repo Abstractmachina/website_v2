@@ -2,12 +2,12 @@
 
 import globalConfigs from "@/GLOBAL.config";
 import Footer from "@/components/Footer";
-import HomeCenterLine from "@/components/HomeCenterLine";
+import HomeCenterDial from "@/components/HomeCenterDial";
 import ShiftTranslateTextBox from "@/components/XShiftBanner";
 import { distance, getWindowCenterCoordinate } from "@/libs/geometry";
 import { uploadProjects } from "@/libs/uploadProjects";
 import { isBrowser, map } from "@/libs/util";
-import { useGlobalActions, useGlobalCenterCoordinate, useGlobalCurrentPage } from "@/stores/globalStore";
+import { useGlobalActions, useGlobalCenterCoordinate, useGlobalClientSize, useGlobalCurrentPage } from "@/stores/globalStore";
 import { useHomeActions, useHomeCenterCoordinate } from "@/stores/homeStore";
 import { IVec2d } from "@/types/IVec2d";
 import { Alignment } from "@/types/enum_AlignmentX";
@@ -26,6 +26,7 @@ export default function Home() {
 	const { setCurrentPage, setCenterCoord, setClientSize } = useGlobalActions();
 	const [mouseAnimateable, setMouseAnimateable] = useState(false);
 	const centerCoord = useGlobalCenterCoordinate();
+	const clientSize = useGlobalClientSize();
 
 	// routing
 	const router = useRouter();
@@ -37,6 +38,7 @@ export default function Home() {
 
 	const textboxStart = 0.3;
 	const bannerStart = 0.5;
+	const linkStart = 0.8;
 
 
 	// styles
@@ -69,6 +71,7 @@ export default function Home() {
 		setClientSize(isBrowser() ? { x: window.innerWidth, y: window.innerHeight } : { x: 0, y: 0 });
 		setCenterCoord(isBrowser() ? window.innerWidth/2 : 0, isBrowser() ? window.innerHeight/2 : 0)
 
+		setMouseAnimateable(true);
 
 		if (isBrowser()) {
 			window.addEventListener("mousemove", handleMouse);
@@ -87,6 +90,7 @@ export default function Home() {
 		setMousePos({ x: e.pageX, y: e.pageY });
 	};
 
+	//update client window size when it it resized by user
 	function handleResize() {
 		let width = 0;
 		let height = 0;
@@ -113,15 +117,19 @@ export default function Home() {
 	};
 
 	const exitPageToArchprojects = async () => {
-		await Promise.all([animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
+		setMouseAnimateable(false);
+		await Promise.all([
+			animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+			animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
 		router.push("/architecture");
 	};
 
 	
 	function getMouseParam() : IVec2d {
 		return {
-			x: map(mousePos.x!, 0, isBrowser() ? window.innerWidth : 0, -1, 1 ),
-			y: map(mousePos.y!, isBrowser() ? window.innerHeight : 0, 0, -1, 1)
+			x: map(mousePos.x!, 0, clientSize.x!, -1, 1 ),
+			y: map(mousePos.y!, clientSize.y!, 0, -1, 1)
 		}
 	}
 
@@ -133,11 +141,14 @@ export default function Home() {
   * @param {any} end number
   * @returns {any} number
   */
-	function modMouseParam(start:number, end:number) : number{
+	function modMouseParam(start: number, end: number): number{
 		const x = getMouseParam().x!
 		const x_u = Math.abs(x); // unsigned val
 		if (x_u < start) return 0;
-		const val = map(x_u, start, end, 0, 1);
+		let val = map(x_u, start, end, 0, 1); // unsigned param
+
+		if (val > 1) val = 1;
+
 		if (x >= 0) return val;
 		else return val * -1;
 	}
@@ -155,7 +166,7 @@ export default function Home() {
 			}}></div> */}
 
 	
-			<HomeCenterLine />
+			<HomeCenterDial rotateParam={ modMouseParam(0.5, 0.8) } widthParam={modMouseParam(0.3, 0.5)}/>
 
 			{/* _____________	Hi Im Tao	_____________________ */}
 			<ShiftTranslateTextBox
@@ -228,7 +239,7 @@ export default function Home() {
 					width: 0
 				}}
 				animate={{
-					width: map(getMouseParam().x!, 0, -1, 0, 100)
+					width: map(modMouseParam(linkStart, 1), 0, -1, 0, 100)
 				}}
 				transition={{
 					type: "tween",

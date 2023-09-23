@@ -1,15 +1,10 @@
 "use client";
 
 import { getRootFontSize, isBrowser, map } from "@/libs/util";
-import { useGlobalActions, useGlobalCenterCoordinate, useGlobalClientSize, useGlobalCurrentPage } from "@/stores/globalStore";
-import { Page } from "@/types/enum_page";
+import { useGlobalCenterCoordinate, useGlobalClientSize } from "@/stores/globalStore";
 import {  motion, useAnimate } from "framer-motion";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FC, ReactElement } from "react";
 import globalConfigs from "@/GLOBAL.config";
-import useMousePosition from "@/hooks/useMousePosition";
-import { useHomeCenterCoordinate } from "@/stores/homeStore";
-import { distance } from "@/libs/geometry";
 import { IVec2d } from "@/types/IVec2d";
 
 enum AnimationState {
@@ -18,49 +13,30 @@ enum AnimationState {
 	ONMOUSEMOVE,
 }
 
-function HomeCenterLine() {
+
+type HomeCenterDialProps = {
+	rotateParam: number,
+	widthParam: number,
+}
+
+const HomeCenterDial : FC<HomeCenterDialProps> = ({rotateParam, widthParam }) : ReactElement => {
 	// state
 	const centerCoord = useGlobalCenterCoordinate();
 
 	//globalstore
 	const clientSize : IVec2d = useGlobalClientSize();
 
-	const mousePos = useMousePosition();
 	const [scope, animate] = useAnimate();
 	const [animationState, setAnimationState] = useState(AnimationState.START);
 	// settings
-	const lineWidthThreshold = 100;
-	const [rotationStart, setRotationStart] = useState<number>(0);
-	const [rotationEnd, setRotationEnd] = useState<number>(0);
-
-
-	useEffect(() => {
-		// init rotation thresholds
-		setRotationStart((clientSize.x! / 2) / 3);
-		setRotationEnd((clientSize.x! / 2));
-	}, [])
-
-	useEffect(() => {
-		setRotationStart((clientSize.x! / 2) / 3);
-		setRotationEnd((clientSize.x! / 2));
-	}, [clientSize])
-	
 
 	const translateRotation = (): number => {
-		const dist = distance(centerCoord, mousePos).x!;
-		const u_dist = Math.abs(dist);
-		if (u_dist < rotationStart ) return 0;
-
-		const val = map(u_dist, rotationStart, rotationEnd, 0, 90);
-		const sign = dist / u_dist;
-		// angle caps at 90
-		return val > 90 || val < -90 ? 90 * sign : val * sign;
+		
+		return map(rotateParam, -1, 1, -90, 90);
 	};
 
 	const translateWidth = (): number => {
-		const u_dist = distance(mousePos, centerCoord, false).x!;
-		if (u_dist < lineWidthThreshold) return 0;
-		return map(u_dist, lineWidthThreshold, rotationStart, 0, window.innerWidth + 100);
+		return map(Math.abs(widthParam), 0, 1, 0, clientSize.x! + clientSize.x! * 0.1);
 	};
 
 	const variants = {
@@ -98,12 +74,19 @@ function HomeCenterLine() {
 			{/* _______________	center line ________________________ */}
 			<motion.div
 				id="centerline"
-				className="h-[0.5px] absolute bg-red-500 z-20 border-none"
-				animate='mouseTrackable'
+				className="h-[0.5px] absolute bg-neutral-900 z-20 border-none"
+				animate= {{
+					rotateZ: translateRotation(),
+					width: translateWidth(),
+					transition: {
+						type: "tween",
+						duration: 0.001
+					}
+				}}
 				variants={variants}
 			></motion.div>
 		</div>
 	);
 }
 
-export default HomeCenterLine;
+export default HomeCenterDial;

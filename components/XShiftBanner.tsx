@@ -35,8 +35,6 @@ const ShiftTranslateTextBox: FC<XShiftBannerProps> = ({ id, text, fontsize, anch
 
 		return map(current, 0, dir, range.min, range.max);
 
-		return 0;
-		// return (x - centerX) * 0.3;
 	};
 
 

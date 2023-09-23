@@ -2,6 +2,13 @@ export const map = (value: number, low1: number, high1: number, low2: number, hi
 	return low2 + ((value - low1) * (high2 - low2)) / (high1 - low1);
 };
 
+export const clamp = (value: number, low: number, high: number): number => {
+	if (value <= low) return low;
+	else if (value >= high) return high;
+	else return value;
+};
+
+
 export const isBrowser = (): boolean => {
 	return typeof window !== "undefined";
 };
