@@ -66,7 +66,14 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 		const url = indexEntries.find(entry => entry.shortCode == hoveredProject)?.preview;
 		setPreviewUrl(url ? url : '');
 
+
 	}, [previewIsVisible]);
+
+	useEffect(() => {
+		//if returned to index, mouse over trackpoint style reset
+		if (selectedProject == 'none') setMouseOverPoint(false);
+
+	}, [selectedProject]);
 
 	const calcYShift = (): number => {
 		const remMultiplier = previewIsVisible ? expandedSize : collapsedSize;
@@ -151,7 +158,7 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 	return (
 		<motion.div
 			id="trackpoint"
-			className="fixed rounded-full inset-x-0 mx-auto z-20 flex items-center overflow-visible justify-end hover:cursor-pointer"
+			className={`fixed rounded-full inset-x-0 mx-auto z-20 flex items-center overflow-visible justify-end ${selectedProject != 'none' ? "hover:cursor-pointer" : ""}`}
 			style={{
 				width: globalConfigs.trackpoint_defaultSize,
 				height: globalConfigs.trackpoint_defaultSize,
@@ -178,10 +185,12 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 					style={{
 						width: 10,
 						opacity: 0,
+						
 					}}
 					animate={{
 						opacity: (selectedProject == 'none' && !mouseOverPoint) ? 1 : 0,
 						width: previewIsVisible ? calcUnderlineWidth() : 10,
+						top: previewIsVisible ? 50 : 0,
 						paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
 					}}
 					transition={{ type: "tween", duration: 0.2 }}
@@ -193,21 +202,6 @@ const Trackpoint : FC<TrackPointProps> = ({indexEntries}) :ReactElement => {
 				<Image src={previewUrl} alt='preview image' width={150} height={150} className=" rounded-full z-10 " />
 			)}
 
-			{isAnimateable && (
-				<motion.div
-					className=" h-[1px] bg-white absolute mt-1 opacity-0"
-					style={{
-						width: 10,
-						opacity: 0,
-					}}
-					animate={{
-						opacity: selectedProject == 'none' ? 1 : 0,
-						width: previewIsVisible ? calcUnderlineWidth() : 10,
-						paddingRight: previewIsVisible ? `${expandedSize}rem` : `${collapsedSize}rem`,
-					}}
-					transition={{ type: "tween", duration: 0.2 }}
-				></motion.div>
-			)}
 		</motion.div>
 	);
 };

@@ -97,7 +97,7 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 	return (
 		<tr key={entry.title}
 			ref={trRef}
-			className="text-white hover:cursor-pointer hover:font-bold text-xs"
+			className="text-white hover:cursor-pointer hover:font-bold text-xs h-12"
 			onMouseEnter={handleOnHoverStart}
 			onMouseLeave={handleOnHoverEnd}
 			onClick={handleClick}

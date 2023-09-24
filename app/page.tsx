@@ -28,6 +28,8 @@ export default function Home() {
 	const centerCoord = useGlobalCenterCoordinate();
 	const clientSize = useGlobalClientSize();
 
+
+
 	// routing
 	const router = useRouter();
 
@@ -58,9 +60,8 @@ export default function Home() {
 			const entryFromArch = async () => {
 				const centerline = document.getElementById("centerline");
 				await animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: 0, ease: "linear" });
-				await animate("#centerline", { rotateZ: 0, width: 2 }, { duration: 0.2, ease: "easeOut" });
+				await animate("#centerline", { rotateZ: 0, width: 2 }, { duration: 1, ease: "easeOut" });
 
-				console.log(centerline);
 			};
 
 			entryFromArch();
@@ -136,7 +137,8 @@ export default function Home() {
 	}
 
 	
-	function getMouseParam() : IVec2d {
+	function getMouseParam(): IVec2d {
+
 		return {
 			x: map(mousePos.x!, 0, clientSize.x!, -1, 1 ),
 			y: map(mousePos.y!, clientSize.y!, 0, -1, 1)

@@ -12,8 +12,6 @@ export const GET = async (req: NextRequest) => {
 
         const projects = await Project.find({}).exec();
         
-        console.log("in api")
-        console.log(projects)
 
 		// project not found
 		if (!projects) {
@@ -40,7 +38,6 @@ export const POST = async (req: NextRequest) => {
 		});
 
 		await newTest.save();
-		console.log("Test uploaded successfully");
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (err) {
 		console.error(err);
