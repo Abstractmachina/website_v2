@@ -9,7 +9,7 @@ This is the source code for my personal website. Please feel free to browse arou
 
 ## Features
 * Revamped personal website using NextJS' newest App router. 
-* Contents are relocated to a MongoDB database and accessed through a serverless API. 
+* Contents are relocated to a MongoDB database and accessed through a REST API. 
 
 ## Technologies
 * NextJS
