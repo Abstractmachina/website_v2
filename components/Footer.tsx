@@ -53,24 +53,31 @@ function Footer() {
 			}
 			variants={variants}
 		>
-			{(currentPage == Page.ARCH) &&
-				<Link href='/' className={`${currentPage == Page.ARCH ? "" : ""}`}>Home</Link>
+			{(currentPage != Page.HOME) &&
+				<motion.div>
+					<Link href='/' className={`${currentPage == Page.ARCH ? "" : ""}`}>Home</Link>
+				
+				</motion.div>
 			}
-			<motion.div>
+			{(currentPage != Page.ABOUT) &&
+				<motion.div>
 				<Link href="/about"
-
 				>
 					About
 				</Link>
 			</motion.div>
-			<div>
+			}
+			
+			{(currentPage != Page.BLOG) &&
+				<motion.div>
 				<Link href="/blog"
 
 				>
 					Blog
 				</Link>
-
-			</div>
+			</motion.div>
+			}
+			
 		</motion.footer>
 	);
 }
