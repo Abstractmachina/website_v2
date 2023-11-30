@@ -13,6 +13,7 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'img-rock-00': "url('/img/rock-00.jpg')",
       },
       fontFamily: {
         'monolisk': ['var(--font-monolisk)'],

@@ -166,7 +166,7 @@ export default function Home() {
 	}
 
 	return (
-		<main className="fixed min-h-full min-w-full top-0 left-0" ref={scope}>
+		<main className="fixed min-h-full min-w-full top-0 left-0 bg-img-rock-00 bg-right-bottom bg-cover" ref={scope}>
 			
 			{/* 
 			// center point alignment
@@ -178,7 +178,7 @@ export default function Home() {
 			}}></div> */}
 
 	
-			<HomeCenterDial rotateParam={ modMouseParam(0.5, 0.8) } widthParam={modMouseParam(0.3, 0.5)}/>
+			{/* <HomeCenterDial rotateParam={ modMouseParam(0.5, 0.8) } widthParam={modMouseParam(0.3, 0.5)}/> */}
 
 			{/* _____________	Hi Im Tao	_____________________ */}
 			<ShiftTranslateTextBox
