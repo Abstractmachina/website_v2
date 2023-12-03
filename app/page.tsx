@@ -165,8 +165,13 @@ export default function Home() {
 		else return val * -1;
 	}
 
+	const pathVariants = {
+		start: { pathLength: 0 },
+		end: { pathLength: 1 },
+	};
+	
 	return (
-		<main className="fixed min-h-full min-w-full top-0 left-0 bg-img-rock-00 bg-right-bottom bg-cover" ref={scope}>
+		<main className="fixed min-h-full min-w-full top-0 left-0 bg-img-rock-00 bg-right-bottom bg-cover flex justify-center items-center" ref={scope}>
 			
 			{/* 
 			// center point alignment
@@ -179,9 +184,50 @@ export default function Home() {
 
 	
 			{/* <HomeCenterDial rotateParam={ modMouseParam(0.5, 0.8) } widthParam={modMouseParam(0.3, 0.5)}/> */}
+			{/* <div id="center" className="fixed rounded-full mx-auto justify-center w-[60vh] h-[60vh] bg-black">
+
+			</div> */}
+
+			<p id="greeting" className="fixed top-2 z-10 text-white">hi, i&apos;m tao</p>
+
+			<p id="tagline" className="fixed bottom-5 z-10 text-white">a computational architect and full stack developer</p>
+
+			<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+				<motion.path
+					d="M 50 10 A 40 40 0 1 1 49.9999 10"
+					fill="red"
+					stroke="white"
+					initial="start"
+					animate="end"
+					variants={pathVariants}
+				/>
+			</svg>
+
+			<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+				{/* Draw the outer circle */}
+				<motion.path
+					d="M 50 10 A 40 40 0 1 1 49.9999 10"
+					fill="transparent"
+					stroke="white"
+					strokeWidth="2"
+					initial="start"
+					animate="end"
+					variants={pathVariants}
+				/>
+
+				{/* Draw the filled portion of the pie chart */}
+				<motion.path
+					d="M 50 10 A 40 40 0 1 1 50 50 L 50 10"
+					fill="#00ff00"
+					stroke="transparent"
+					initial="start"
+					animate="end"
+					variants={pathVariants}
+				/>
+    		</svg>
 
 			{/* _____________	Hi Im Tao	_____________________ */}
-			<ShiftTranslateTextBox
+			{/* <ShiftTranslateTextBox
 				id = "myName"
 				text="Hi, I'm Tao"
 				fontsize={3}
@@ -190,9 +236,9 @@ export default function Home() {
 				range={{ min: 0, max: -200 }}
 				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.LEFT}
-			/>
+			/> */}
 			{/* _______________	tag line 	________________________*/}
-			<ShiftTranslateTextBox
+			{/* <ShiftTranslateTextBox
 				id="tagline"
 				text="a computational architect and fullstack developer"
 				fontsize={1}
@@ -201,11 +247,11 @@ export default function Home() {
 				range={{ min: 0, max: -200 }}
 				current={modMouseParam(textboxStart, 1)}
 				direction={Direction.RIGHT}
-			/>
+			/> */}
 
 			{/* __________	Banners	____________________________________ */}
 			{/* Banner architecture */}
-			<motion.div id="banner_arch" className="font-monument text-9xl fixed"
+			{/* <motion.div id="banner_arch" className="font-monument text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x!,
@@ -222,10 +268,10 @@ export default function Home() {
 				}}
 			>
 				ARCHITECTURE
-			</motion.div>
+			</motion.div> */}
 
 			{/* banner programming */}
-			<motion.div id="banner_programming" className="font-monument text-9xl fixed"
+			{/* <motion.div id="banner_programming" className="font-monument text-9xl fixed"
 				style={{
 					top: centerCoord.y! - 350,
 					left: centerCoord.x! - 700,
@@ -242,10 +288,10 @@ export default function Home() {
 				}}
 			>
 				PROGRAMMING
-			</motion.div>
+			</motion.div> */}
 
 			{/* ________	link element to architecture projects page	________ */}
-			<motion.div id="link_arch" className="fixed top-0 left-0 h-1/2 z-10 hover:cursor-pointer"
+			{/* <motion.div id="link_arch" className="fixed top-0 left-0 h-1/2 z-10 hover:cursor-pointer"
 				style={{
 					backgroundColor: globalConfigs.color_accent,
 					width: 0
@@ -258,10 +304,10 @@ export default function Home() {
 					duration: 0.01
 				}}
 				onClick={exitToArchprojects} >
-			</motion.div>
+			</motion.div> */}
 
 			{/* ________	link element to programming projects page	________ */}
-			<motion.div id="link_program" className="fixed bottom-0 right-0 h-1/2 z-10 hover:cursor-pointer"
+			{/* <motion.div id="link_program" className="fixed bottom-0 right-0 h-1/2 z-10 hover:cursor-pointer"
 				style={{
 					backgroundColor: globalConfigs.color_accent,
 					width: 0
@@ -274,7 +320,7 @@ export default function Home() {
 					duration: 0.01
 				}}
 				onClick={exitToProgrammingProject} >
-			</motion.div>
+			</motion.div> */}
 		</main>
 	);
 }
