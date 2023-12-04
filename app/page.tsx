@@ -3,6 +3,7 @@
 import globalConfigs from "@/GLOBAL.config";
 import Footer from "@/components/Footer";
 import HomeCenterDial from "@/components/HomeCenterDial";
+import PieChart from "@/components/PieChart";
 import ShiftTranslateTextBox from "@/components/XShiftBanner";
 import { distance, getWindowCenterCoordinate } from "@/libs/geometry";
 import { uploadProjects } from "@/libs/uploadProjects";
@@ -56,18 +57,24 @@ export default function Home() {
 	// on component mount
 	useEffect(() => {
 		// set up when coming from arch projects
-		if (currentPage == Page.ARCH) {
-			const entryFromArch = async () => {
-				const centerline = document.getElementById("centerline");
-				await animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: 0, ease: "linear" });
-				await animate("#centerline", { rotateZ: 0, width: 2 }, { duration: 1, ease: "easeOut" });
+		// if (currentPage == Page.ARCH) {
+		// 	const entryFromArch = async () => {
+		// 		const centerline = document.getElementById("centerline");
+		// 		await animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: 0, ease: "linear" });
+		// 		await animate("#centerline", { rotateZ: 0, width: 2 }, { duration: 1, ease: "easeOut" });
 
-			};
+		// 	};
 
-			entryFromArch();
-			setCurrentPage(Page.HOME);
-			router.prefetch("/architecture");
+		// 	entryFromArch();
+		// 	setCurrentPage(Page.HOME);
+		// 	router.prefetch("/architecture");
+		// }
+
+		const introAnimation = async () => {
+			const greeting = document.getElementById("greeting");
+			await animate("#greeting", { top: 100 }, {duration: 2, ease: "easeIn"});
 		}
+		introAnimation();
 
 		// initiate client size and center coord
 		setClientSize(isBrowser() ? { x: window.innerWidth, y: window.innerHeight } : { x: 0, y: 0 });
@@ -188,43 +195,12 @@ export default function Home() {
 
 			</div> */}
 
-			<p id="greeting" className="fixed top-2 z-10 text-white">hi, i&apos;m tao</p>
+			<PieChart percent={0.3}/>
 
-			<p id="tagline" className="fixed bottom-5 z-10 text-white">a computational architect and full stack developer</p>
+			<h2 id="greeting" className="fixed top-[calc(50vh-10rem)] z-10 text-white">hi, i&apos;m tao</h2>
 
-			<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-				<motion.path
-					d="M 50 10 A 40 40 0 1 1 49.9999 10"
-					fill="red"
-					stroke="white"
-					initial="start"
-					animate="end"
-					variants={pathVariants}
-				/>
-			</svg>
+			<p id="tagline" className="fixed bottom-[calc(50vh-10rem)] z-10 text-white">a computational architect and full stack developer</p>
 
-			<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-				{/* Draw the outer circle */}
-				<motion.path
-					d="M 50 10 A 40 40 0 1 1 49.9999 10"
-					fill="transparent"
-					stroke="white"
-					strokeWidth="2"
-					initial="start"
-					animate="end"
-					variants={pathVariants}
-				/>
-
-				{/* Draw the filled portion of the pie chart */}
-				<motion.path
-					d="M 50 10 A 40 40 0 1 1 50 50 L 50 10"
-					fill="#00ff00"
-					stroke="transparent"
-					initial="start"
-					animate="end"
-					variants={pathVariants}
-				/>
-    		</svg>
 
 			{/* _____________	Hi Im Tao	_____________________ */}
 			{/* <ShiftTranslateTextBox
