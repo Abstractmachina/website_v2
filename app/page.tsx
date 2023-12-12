@@ -3,7 +3,7 @@
 import globalConfigs from "@/GLOBAL.config";
 import Footer from "@/components/Footer";
 import HomeCenterDial from "@/components/HomeCenterDial";
-import PieChart from "@/components/PieChart";
+import SweepingCircle from "@/components/SweepingCircle";
 import ShiftTranslateTextBox from "@/components/XShiftBanner";
 import { distance, getWindowCenterCoordinate } from "@/libs/geometry";
 import { uploadProjects } from "@/libs/uploadProjects";
@@ -14,7 +14,7 @@ import { IVec2d } from "@/types/IVec2d";
 import { Alignment } from "@/types/enum_AlignmentX";
 import { Direction } from "@/types/enum_direction";
 import { Page } from "@/types/enum_page";
-import { motion, useAnimate } from "framer-motion";
+import { motion, useAnimate, useMotionValue } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -176,6 +176,11 @@ export default function Home() {
 		start: { pathLength: 0 },
 		end: { pathLength: 1 },
 	};
+
+	const pe = useMotionValue<number>(0);
+	pe.set(0.3);
+
+
 	
 	return (
 		<main className="fixed min-h-full min-w-full top-0 left-0 bg-img-rock-00 bg-right-bottom bg-cover flex justify-center items-center" ref={scope}>
@@ -195,7 +200,7 @@ export default function Home() {
 
 			</div> */}
 
-			<PieChart percent={0.3}/>
+			<SweepingCircle percent={0.4} />
 
 			<h2 id="greeting" className="fixed top-[calc(50vh-10rem)] z-10 text-white">hi, i&apos;m tao</h2>
 
