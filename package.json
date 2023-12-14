@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pyncz/tailwind-mask-image": "^2.0.0",
     "@typegoose/typegoose": "^11.5.0",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",

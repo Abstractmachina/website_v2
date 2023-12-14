@@ -27,6 +27,8 @@ const config: Config = {
       sans: ["var(--font-opensans)", ...defaultTheme.fontFamily.sans],
     },
   },
-  plugins: [],
+  plugins: [
+    require('@pyncz/tailwind-mask-image')
+  ],
 }
 export default config

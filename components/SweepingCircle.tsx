@@ -32,40 +32,93 @@ const SweepingCircle: FC<SweepingCircleProps> = ({percent}): ReactElement => {
 
 
 	return (
-		<div className="">
+		// <div className="w-100 h-100">
 
 
+		// 	<svg
+		// 		width="100%"
+		// 		height="100%"
+		// 		viewBox="-1 -1 2 2"
+		// 		style={{ transform: "rotate(-0.25turn)" }}>
+		// 		<defs>
+		// 			<mask id="bb">
+		// 				<circle 
+		// 				id = "aa"
+		// 				cx="0"
+		// 				cy=""
+		// 				r="0.5"
+		// 				stroke="white"
+		// 				strokeWidth="1"
+		// 				strokeDasharray="2.2"
+		// 				/>
+		// 		</mask>
+
+		// 			</defs>
+					
+					
+		// 		{/* <g mask="url(#bb)" href="#aa"> */}
+					
+		// 			{/* <img src="./img/test.png" alt="test" /> */}
+		// 			{/* <rect x="-1" y="-1" width="2" height="2" fill="blue" /> */}
+				
+		// 		{/* </g> */}
+
+		// 	</svg>
+		// 	<img src="./img/test.png" alt="test" id="test" className="fixed top-2 z-10"></img>
+				
+		// </div>
+		<div className="fixed w-screen h-screen">
+			{/* <div className="bg-blue-500 w-full h-full"
+			>	
+				<img src="/img/test.png" alt="test" id="haha" className=" h-100 w-100 mask-[url(#mask)]" style={{objectFit: "cover", WebkitMaskImage: "url(#mask)"}}></img>
+			</div> */}
 			<svg
 				width="100%"
 				height="100%"
 				viewBox="-1 -1 2 2"
-				style={{ transform: "rotate(-0.25turn)" }}>
+				style={{ transform: "rotate(-0.25turn)" }}
+				className="absolute">
 				<defs>
-					<mask id="bb">
+					<mask id="mask">
+						<rect
+							x="-1"
+							y="-1"
+							width="2"
+							height="2"
+							fill="white" />
 						<circle 
+							id = "aa"
+							cx="0"
+							cy="0"
+							r="0.5"
+							stroke="black"
+							fill="black"
+							strokeWidth="1"
+							strokeDasharray="2"
+						/>
+					</mask>
+				</defs>
+					
+				{/* <circle 
 						id = "aa"
 						cx="0"
 						cy=""
 						r="0.5"
 						stroke="white"
 						strokeWidth="1"
-						strokeDasharray="2.2"
-						/>
-				</mask>
-
-					</defs>
-					
-					
-				{/* <g mask="url(#bb)" href="#aa"> */}
-					
-					{/* <img src="./img/test.png" alt="test" /> */}
-					{/* <rect x="-1" y="-1" width="2" height="2" fill="blue" /> */}
+						strokeDasharray="3"
+				/> */}
+				{/* <img src="/img/test.png" alt="test"
+					id="haha"
+					className=""
+					style={{ maskImage: "url(#mask)" }}
+				width={400} height={400}/> */}
+				{/* <rect x="-200" y="-200" width="400" height="400" fill="red" mask="url(#mask)"></rect> */}
 				
-				{/* </g> */}
-
 			</svg>
-			<img src="/img/test.png" alt="test" id="test" className="fixed top-2"></img>
-				
+
+			{/* this image defnitely works */}
+			{/* <img src="/img/test.png" alt="test" id="haha" className="fixed top-2 z-10"></img> */}
 		</div>
 
 		

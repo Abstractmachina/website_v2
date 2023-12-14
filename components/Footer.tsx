@@ -10,7 +10,7 @@ function Footer() {
 	const currentPage = useGlobalCurrentPage();
 	const clientSize = useGlobalClientSize();
 
-	console.log(Page[currentPage]);
+	// console.log(Page[currentPage]);
 	const styleHome = "fixed bottom-0 left-0 py-4 px-8 flex justify-between min-w-full"
 	const styleArch = "text-white"
 	const footerStyleArch = "min-1/2"

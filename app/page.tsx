@@ -1,12 +1,10 @@
 "use client";
 
 import globalConfigs from "@/GLOBAL.config";
-import Footer from "@/components/Footer";
-import HomeCenterDial from "@/components/HomeCenterDial";
+import Button_Dot from "@/components/Button_Dot";
 import SweepingCircle from "@/components/SweepingCircle";
 import ShiftTranslateTextBox from "@/components/XShiftBanner";
 import { distance, getWindowCenterCoordinate } from "@/libs/geometry";
-import { uploadProjects } from "@/libs/uploadProjects";
 import { isBrowser, map } from "@/libs/util";
 import { useGlobalActions, useGlobalCenterCoordinate, useGlobalClientSize, useGlobalCurrentPage } from "@/stores/globalStore";
 import { useHomeActions, useHomeCenterCoordinate } from "@/stores/homeStore";
@@ -28,8 +26,6 @@ export default function Home() {
 	const [mouseAnimateable, setMouseAnimateable] = useState(false);
 	const centerCoord = useGlobalCenterCoordinate();
 	const clientSize = useGlobalClientSize();
-
-
 
 	// routing
 	const router = useRouter();
@@ -185,26 +181,32 @@ export default function Home() {
 	return (
 		<main className="fixed min-h-full min-w-full top-0 left-0 bg-img-rock-00 bg-right-bottom bg-cover flex justify-center items-center" ref={scope}>
 			
-			{/* 
-			// center point alignment
+			
+			 {/* center point alignment */}
 			
 			<div className="bg-blue-500 h-[2px] w-[2px] fixed z-50"
 				style={{
 					top: centerCoord.y!,
 					left: centerCoord.x!
-			}}></div> */}
-
-	
-			{/* <HomeCenterDial rotateParam={ modMouseParam(0.5, 0.8) } widthParam={modMouseParam(0.3, 0.5)}/> */}
-			{/* <div id="center" className="fixed rounded-full mx-auto justify-center w-[60vh] h-[60vh] bg-black">
-
-			</div> */}
+			}}></div>
 
 			<SweepingCircle percent={0.4} />
+			
+			<div>
+				<img src="\img\portrait_00.png" alt="test"
+					id="haha"
+					className="w-100 h-100 bg-slate-50 rounded-full"
+				/>
+	
+			</div>
+			
 
 			<h2 id="greeting" className="fixed top-[calc(50vh-10rem)] z-10 text-white">hi, i&apos;m tao</h2>
 
 			<p id="tagline" className="fixed bottom-[calc(50vh-10rem)] z-10 text-white">a computational architect and full stack developer</p>
+
+
+			<Button_Dot direction={Direction.UP}/>
 
 
 			{/* _____________	Hi Im Tao	_____________________ */}
