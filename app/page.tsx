@@ -89,6 +89,15 @@ export default function Home() {
 		  }
 	}, []);
 
+	useEffect(() => {
+		let rootFontSize = "unset";
+		if (isBrowser()) rootFontSize = window.getComputedStyle(document.body).getPropertyValue("font-size");
+		if (rootFontSize == "unset") rootFontSize = "16px";
+		// setBaseFontSize(parseInt(rootFontSize, 10));
+
+
+	}, []);
+
 	// _______________  EVENTS  __________________________
 
 	const handleMouse = (e: MouseEvent): void => {
@@ -108,18 +117,6 @@ export default function Home() {
 		setCenterCoord(centerX, centerY);
 		setClientSize({ x: width, y: height });
 	}
-
-	const archLinkMotion = () => {
-		// let dist = distance(mousePos, centerCoord).x!;
-		// try {
-		// let dist = distance(mousePos, centerCoord).x!;
-		// }
-		// let opacity = map(dist, 0, -centerX, 0, 1.0);
-		// if (isNaN(opacity)) opacity = 0;
-		return {
-			opacity: 1,
-		};
-	};
 
 	const exitToArchprojects = async () => {
 		setMouseAnimateable(false);
@@ -206,7 +203,10 @@ export default function Home() {
 			<p id="tagline" className="fixed bottom-[calc(50vh-10rem)] z-10 text-white">a computational architect and full stack developer</p>
 
 
+			<Button_Dot direction={Direction.LEFT}/>
 			<Button_Dot direction={Direction.UP}/>
+			<Button_Dot direction={Direction.RIGHT}/>
+			<Button_Dot direction={Direction.DOWN}/>
 
 
 			{/* _____________	Hi Im Tao	_____________________ */}
