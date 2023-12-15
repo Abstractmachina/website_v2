@@ -119,12 +119,14 @@ export default function Home() {
 	}
 
 	const exitToArchprojects = async () => {
+		console.log("clicked");
 		setMouseAnimateable(false);
-		await Promise.all([
-			animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
-			animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
 		router.push("/architecture");
+		// await Promise.all([
+		// 	animate("#centerline", { rotateZ: -90, width: centerCoord.x! * 4 }, { duration: exitAnimationDuration, ease: "linear" }), animate("#myName", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+		// 	animate("#tagline", { x: 2000 }, { duration: exitAnimationDuration, ease: "linear" }),
+		// 	animate("#banner_arch", { x: -2000 }, { duration: exitAnimationDuration, ease: "linear" })]);
+		// router.push("/architecture");
 	};
 
 	async function exitToProgrammingProject() {
@@ -203,10 +205,10 @@ export default function Home() {
 			<p id="tagline" className="fixed bottom-[calc(50vh-10rem)] z-10 text-white">a computational architect and full stack developer</p>
 
 
-			<Button_Dot direction={Direction.LEFT}/>
-			<Button_Dot direction={Direction.UP}/>
+			<Button_Dot direction={Direction.LEFT} onClickHandler={exitToArchprojects}/>
+			{/* <Button_Dot direction={Direction.UP}/>
 			<Button_Dot direction={Direction.RIGHT}/>
-			<Button_Dot direction={Direction.DOWN}/>
+			<Button_Dot direction={Direction.DOWN}/> */}
 
 
 			{/* _____________	Hi Im Tao	_____________________ */}

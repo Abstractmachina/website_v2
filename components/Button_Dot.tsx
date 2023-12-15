@@ -9,10 +9,15 @@ type dotButtonprops = {
 }
 
 
-const Button_Dot: FC<dotButtonprops> = ({direction, onClickHandler}) => {
+const Button_Dot: FC<dotButtonprops> = ({ direction, onClickHandler }) => {
+    
+
+    async function handleClick() : Promise<any> {
+        await onClickHandler();
+    }
     
     return (
-        <div className={` h-4 w-4 fixed rounded-full bg-red-500 ${direction}-0 z-10`}></div>
+        <div className={` h-4 w-4 fixed rounded-full hover:cursor-pointer bg-red-500 ${direction}-0 z-10`} onClick={handleClick}></div>
     )
 }
 
