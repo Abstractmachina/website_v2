@@ -46,29 +46,29 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 
 	// event handling
 	const handleOnHoverStart = (e: React.MouseEvent) => {
-		setHoveredProject(entry.shortCode);
-		if (selectedProject == "none") {
-			showPreview(true);
-			setCurrentState(ProjectIndexRowState.HOVERED);
+		// setHoveredProject(entry.shortCode);
+		// if (selectedProject == "none") {
+		// 	showPreview(true);
+		// 	setCurrentState(ProjectIndexRowState.HOVERED);
 
-			// update preview position for aligning trackpoint with hovered project index
-			const clientRect = trRef.current?.getBoundingClientRect();
-			setPosition(trRef.current ? clientRect!.left : 0, trRef.current ? clientRect!.top + trRef.current.offsetHeight : 0);
-		}
+		// 	// update preview position for aligning trackpoint with hovered project index
+		// 	const clientRect = trRef.current?.getBoundingClientRect();
+		// 	setPosition(trRef.current ? clientRect!.left : 0, trRef.current ? clientRect!.top + trRef.current.offsetHeight : 0);
+		// }
 	};
 
 	const handleOnHoverEnd = (e: React.MouseEvent) => {
-		setHoveredProject('none');
-		showPreview(false);
-		if (selectedProject == "none") setCurrentState(ProjectIndexRowState.INACTIVE);
+		// setHoveredProject('none');
+		// showPreview(false);
+		// if (selectedProject == "none") setCurrentState(ProjectIndexRowState.INACTIVE);
 	};
 
 	const handleClick = () => {
-		setSelectedProject(entry.shortCode);
-		showPreview(false);
-		//reset all other rows to default style
-		setCurrentState(ProjectIndexRowState.SELECTED);
-		router.push(`/architecture/${entry.shortCode}`);
+		// setSelectedProject(entry.shortCode);
+		// showPreview(false);
+		// //reset all other rows to default style
+		// setCurrentState(ProjectIndexRowState.SELECTED);
+		// router.push(`/architecture/${entry.shortCode}`);
 	};
 
 	function determineStyle() {
@@ -103,10 +103,10 @@ const ProjectIndexRow: FC<ProjectIndexRowProps> = ({ entry }): ReactElement => {
 			onClick={handleClick}
 			style={determineStyle()}
 		>
-			<td className=" w-.5 align-top">{entry.year}</td>
-			<td className="px-1 whitespace-normal align-top">{entry.title}</td>
-			<td className="px-1 align-top">{listCategories}</td>
-			<td className="pl-1 pr-0 align-top">{listAffiliations}</td>
+			<td className="">{entry.year}</td>
+			<td className="px-1 whitespace-normal">{entry.title}</td>
+			{/* <td className="px-1 align-top">{listCategories}</td> */}
+			{/* <td className="pl-1 pr-0 align-top">{listAffiliations}</td> */}
 		</tr>
 	);
 };

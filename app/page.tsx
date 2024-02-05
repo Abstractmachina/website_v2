@@ -65,6 +65,7 @@ export default function Home() {
 		// 	setCurrentPage(Page.HOME);
 		// 	router.prefetch("/architecture");
 		// }
+		// router.prefetch("/architecture");
 
 		const introAnimation = async () => {
 			const greeting = document.getElementById("greeting");

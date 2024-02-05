@@ -1,31 +1,24 @@
-import ProjectIndex from "@/components/ProjectIndex";
+import ProjectIndex from "@/components/ProjectIndexTab";
 import Trackpoint from "@/components/Trackpoint";
 import IndexEntry from "@/types/IndexEntry";
 
-async function getProjectIndex() {
-	const res = await fetch(process.env.SERVER + "/api/projects");
-	const data = await res.json();
 
-	const index: IndexEntry[] = [];
-	for (let i = 0; i < data.projects.length; i++) {
-		index.push(new IndexEntry().deserialize(data.projects[i]));
-	}
-	return index;
-}
 
 export default async function ArchLayout({ children }: { children: React.ReactNode }) {
-	const index = await getProjectIndex();
+	// const index = await getProjectIndex();
 
 	// =================		DOM			=======================
 
 	return (
 		// <main ref={scope} className="fixed flex min-h-full min-w-full top-0 left-0">
-		<main className="fixed flex min-h-full min-w-full top-0 left-0">
-			{/* project index */}
-			<ProjectIndex entries={index} />
-            <Trackpoint indexEntries={ index }/>
+		<main className="fixed flex min-h-full min-w-full top-0 left-0 justify-between">
+			
+			<ProjectIndex />
+			<div className="w-[33%] bg-img-rock-00 bg-blend-soft-light bg-gray-300 border-r-2 border-black">preview</div>
+			<div className=" bg-blue-500  grow">content</div>
+            {/* <Trackpoint indexEntries={ index }/> */}
 			{/* project content */}
-			{children}
+			{/* {children} */}
 		</main>
 	);
 }

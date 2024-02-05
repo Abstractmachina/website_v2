@@ -64,7 +64,7 @@ export default function RootLayout({
     <html lang="en" className={`${monument.variable} ${openSans.className} ${sourceSerif4.variable} ${roboto.className}`}>
       <body >
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
       
     </html>
